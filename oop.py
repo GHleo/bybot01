@@ -4,7 +4,7 @@ from tkinter import messagebox as msg
 from tkinter import scrolledtext
 from datetime import datetime as dt
 #import pandas as pd
-import futuresHEDGE as fHedge
+#import futuresHEDGE as fHedge
 import futuresHEDGE2 as fHedge2
 
 import config as cnfg
@@ -309,12 +309,12 @@ class OOP:
         self.lblFtr04 = ttk.Label(self.panel2s, textvariable=self.vPrice2) # First in ($) for UP
         self.lblFtr04.grid(column=1, row=2, sticky='W')
 
-        self.lblFtrP2_02 = ttk.Label(self.panel2s, text='Balance(1/2):')
-        self.lblFtrP2_02.grid(column=0, row=3, padx=2, sticky='E')
-        self.entFtrVar01 = tk.StringVar()
-        self.entFtrVar01.set(0.00)
-        self.entFtr01 = tk.Entry(self.panel2s, textvariable=self.entFtrVar01, width=4)# Balance for Short then UP
-        self.entFtr01.grid(column=1, row=3, sticky='W')
+        # self.lblFtrP2_02 = ttk.Label(self.panel2s, text='Balance(1/2):')
+        # self.lblFtrP2_02.grid(column=0, row=3, padx=2, sticky='E')
+        # self.entFtrVar01 = tk.StringVar()
+        # self.entFtrVar01.set(0.00)
+        # self.entFtr01 = tk.Entry(self.panel2s, textvariable=self.entFtrVar01, width=4)# Balance for Short then UP
+        # self.entFtr01.grid(column=1, row=3, sticky='W')
 
         self.lblFtr06 = ttk.Label(self.panel2s, text='Leverage:')
         self.lblFtr06.grid(column=0, row=4, padx=2, sticky='E')
@@ -322,7 +322,7 @@ class OOP:
         self.cmbFtr04.current(9)
         self.cmbFtr04.grid(column=1, row=4, sticky='W')
 
-        self.lblFtrP2_03 = ttk.Label(self.panel2s, text='TBalance(1/2):') # Balance * Leverage for Short
+        self.lblFtrP2_03 = ttk.Label(self.panel2s, text='TBalance:') # Balance * Leverage for Short
         self.lblFtrP2_03.grid(column=0, row=5, padx=2, sticky='E')
         self.vTBsh = tk.StringVar()
         self.vTBsh.set(0.00)
@@ -348,12 +348,12 @@ class OOP:
         self.lblFtr09 = ttk.Label(self.panel2l, textvariable=self.vPrice3) # First in ($) for DOWN
         self.lblFtr09.grid(column=1, row=2, sticky='W')
 
-        self.lblFtrP2_02l = ttk.Label(self.panel2l, text='Balance(1/2):')
-        self.lblFtrP2_02l.grid(column=0, row=3, padx=2, sticky='E')
-        self.entFtrVar02 = tk.StringVar()
-        self.entFtrVar02.set(0.00)
-        self.entFtr03 = tk.Entry(self.panel2l, textvariable=self.entFtrVar02, width=4) # Balance for Long
-        self.entFtr03.grid(column=1, row=3, sticky='W')
+        # self.lblFtrP2_02l = ttk.Label(self.panel2l, text='Balance(1/2):')
+        # self.lblFtrP2_02l.grid(column=0, row=3, padx=2, sticky='E')
+        # self.entFtrVar02 = tk.StringVar()
+        # self.entFtrVar02.set(0.00)
+        # self.entFtr03 = tk.Entry(self.panel2l, textvariable=self.entFtrVar02, width=4) # Balance for Long
+        # self.entFtr03.grid(column=1, row=3, sticky='W')
 
         self.lblFtr06l = ttk.Label(self.panel2l, text='Leverage:')
         self.lblFtr06l.grid(column=0, row=4, padx=2, sticky='E')
@@ -361,7 +361,7 @@ class OOP:
         self.cmbFtr09.current(9)
         self.cmbFtr09.grid(column=1, row=4, sticky='W')
 
-        self.lblTBsh = ttk.Label(self.panel2l, text='TBalance(1/2):') # Balance * Leverage for Long
+        self.lblTBsh = ttk.Label(self.panel2l, text='TBalance:') # Balance * Leverage for Long
         self.lblTBsh.grid(column=0, row=5, padx=2, sticky='E')
         self.vTBlng = tk.StringVar()
         self.vTBlng.set(0.00)
@@ -614,7 +614,7 @@ class OOP:
         print(cnfg.pair)
         # cnfg.LevS[0] = self.cmbFtr04.get() # Leverage for Short
         # cnfg.LevS[1] = self.cmbFtr09.get() # Leverage for Long
-        fHedge2.fhUSDM_Calculate(self.vPrice, self.vBal,self.entFtrVar01,self.entFtrVar02,self.vTBsh,self.vTBlng)
+        fHedge2.fhUSDM_Calculate(self.vPrice, self.vBal, self.vTBsh,self.vTBlng)
         #cnfg.init = True #check is press Init?
         cnfg.calculate = True  # check is press Init?
     def usdmInit(self):

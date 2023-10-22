@@ -101,7 +101,7 @@ def initCurrent(): #init with second trade and more
     cnfg.costTP_Long[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.lngTPfirst[cnfg.loopItems]) / 100), cnfg.pricePrc) # calculate TP
     cnfg.costSL_Long[cnfg.loopItems] = round(currGb_ * (1 - float(cnfg.lngSLfirst[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
 
-def fhUSDM_Calculate(CurRt_, TBal_, balUP_, balDn_,balUPt_,balDnT_):
+def fhUSDM_Calculate(CurRt_, TBal_, balUPt_,balDnT_):
     try:
         cnfg.session.switch_position_mode(category="linear", symbol=cnfg.pair, mode=0)# mode=3) #Switch Position Mode
         #print('fhUSDM_Calculate() switchPM:  ' + str(switchPM))
@@ -119,20 +119,15 @@ def fhUSDM_Calculate(CurRt_, TBal_, balUP_, balDn_,balUPt_,balDnT_):
 
     TBal_.set(totalBalance)
 
-    balUP = round(totalBalance / 2, 1)
-    print('fhUSDM_Calculate: balance UP = ' + str(balUP))
-    balUP_.set(balUP)
-    balUPt = round(balUP * cnfg.levUP, 2)
+    balUPt = round(totalBalance * cnfg.levUP, 2)
     print('fhUSDM_Calculate: total balance UP = ' + str(balUPt))
-    cnfg.balancesShU[0] = balUP  # initialisation long & short balance for UP
+    cnfg.balancesShU[0] = totalBalance  # initialisation long & short balance for UP
     balUPt_.set(balUPt)
     cnfg.balancesShU[1] = balUPt  # initialisation long & short balance * leverage for UP
 
-    balDn = round(totalBalance - balUP,1)
-    balDnt = round(balDn * cnfg.levDn, 1)
+    balDnt = round(totalBalance * cnfg.levDn, 1)
     print('fhUSDM_Calculate: total balance Down = ' + str(balDnt))
-    balDn_.set(balDn)      # initialisation balance for DOWN
-    cnfg.balancesLngDn[0] = balDn
+    cnfg.balancesLngDn[0] = totalBalance
     balDnT_.set(balDnt)
     cnfg.balancesLngDn[1] = balDnt
 
