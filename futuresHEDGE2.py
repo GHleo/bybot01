@@ -39,12 +39,13 @@ def fhUSDM_initUP(lblPriceInUP_):
     #------------------------ 1th trading -------------------------
     ####### SHORT
     ratio = float(round(1/int(cnfg.CTrades[1]),2)) #Ratio for two trades
+    print('\nfhUSDM_initUP() ratio  = ' + str(ratio))
     cnfg.positShUp[0] = truncate(cnfg.balancesShU[1] * ratio / cnfg.costsUP[0], qtyStep) #calculate count in first position
     #cnfg.balanceShRatU[0] = cnf.balancesSh[1]*ratio #balance on first trade Short
 
-    print('fhUSDM_initUP() (cnfg.balancesShU[1] * ratio) cnfg.positSh[0] = ' + str(cnfg.positShUp[0]))
+    print('fhUSDM_initUP() cnfg.balancesShU[1]  = ' + str(cnfg.balancesShU[1]))
     cnfg.balanceShRatU[0] = round(cnfg.positShUp[0] * cnfg.costsUP[0], 2)  # REWRITE balance after truncate quontity !!!!!!
-    print('fhUSDM_initUP()  cnfg.balanceShRatU[0] = ' + str(cnfg.balanceShRatU[0]))
+    print('fhUSDM_initUP()  Qty(short)  cnfg.positShUp[0]  = ' + str(cnfg.positShUp[0]))
     cnfg.costTP_ShortU[0] = round(cnfg.costsUP[0]*(1-float(cnfg.shTPfirst[0])/100),cnfg.pricePrc) #cost first TP
     cnfg.costSL_ShortU[0]=round(cnfg.costsUP[0]*(1+float(cnfg.shSLfirst[0])/100),cnfg.pricePrc) #cost first SL
     fee1 = round(cnfg.balanceShRatU[0] * float(feeMarket),4) # fee on market trade, buy and sell
@@ -64,12 +65,12 @@ def fhUSDM_initDOWN(lblPriceInDn_):
     #------------------------ 1th trading -------------------------
     ####### LONG
     ratio = float(round(1/int(cnfg.CTrades[0]),2)) #Ratio for two trades
-    cnfg.positLngDn[0] = truncate(cnfg.balancesLngDn[1] / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
-    cnfg.balancesLngDn[1] = cnfg.balancesLngDn[1]
-    print('initDown cnfg.balancesLngDn[1] RW = ' + str(round(cnfg.balancesLngDn[1],2)))
+    print('\nfhUSDM_initDOWN() ratio  = ' + str(ratio))
+    cnfg.positLngDn[0] = truncate(cnfg.balancesLngDn[1] * ratio / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
+    print('\nfhUSDM_initDOWN() cnfg.balancesLngDn[1] = ' + str(round(cnfg.balancesLngDn[1],2)))
 
     #print('initDown Qty(long)  cnfg.positLngDn[0] = ' + str(cnfg.balancesLngDn[1] / cnfg.costsDn[0]))
-    print('initDown Qty(long trancate)  cnfg.positLngDn[0] = ' + str(cnfg.positLngDn[0]))
+    print('fhUSDM_initDOWN() Qty(long)  cnfg.positLngDn[0] = ' + str(cnfg.positLngDn[0]))
     cnfg.balanceLngRatDn[0] = round(cnfg.positLngDn[0] * cnfg.costsDn[0], 2)  # REWRITE balance after truncate quontity !!!!!!
     cnfg.costTP_LongDn[0] = round(cnfg.costsDn[0] * (1 + float(cnfg.lngTPfirstDn[0]) / 100), cnfg.pricePrc) #cost first TP
     cnfg.costSL_LongDn[0]=round(cnfg.costsDn[0] * (1 - float(cnfg.lngSLfirstDn[0]) / 100), cnfg.pricePrc) #cost first SL !!!!!!!!!!!! TRIGER IN OCO !!!!!!
@@ -120,13 +121,13 @@ def fhUSDM_Calculate(CurRt_, TBal_, balUPt_,balDnT_):
     TBal_.set(totalBalance)
 
     balUPt = round(totalBalance * cnfg.levUP, 2)
-    print('fhUSDM_Calculate: total balance UP = ' + str(balUPt))
+    print('fhUSDM_Calculate() total balance UP = ' + str(balUPt))
     cnfg.balancesShU[0] = totalBalance  # initialisation long & short balance for UP
     balUPt_.set(balUPt)
     cnfg.balancesShU[1] = balUPt  # initialisation long & short balance * leverage for UP
 
     balDnt = round(totalBalance * cnfg.levDn, 1)
-    print('fhUSDM_Calculate: total balance Down = ' + str(balDnt))
+    print('fhUSDM_Calculate() total balance Down = ' + str(balDnt))
     cnfg.balancesLngDn[0] = totalBalance
     balDnT_.set(balDnt)
     cnfg.balancesLngDn[1] = balDnt
@@ -138,11 +139,8 @@ def calculateBalance():
     wallet_balance1 = get_wallet_balance['result']['list']
     wallet_balance2 = wallet_balance1[0]['coin']
     wallet_balance_total1 = truncate(float(wallet_balance2[0]['availableToWithdraw']),2)
-    print('initDown wallet_balance_total1= ' + str(wallet_balance_total1))
     wallet_balance_total = round(wallet_balance_total1 ,2)
-    print('initDown wallet_balance_total= ' + str(wallet_balance_total))
-    balSh = round(wallet_balance_total / 2, 1)
-    balLng = wallet_balance_total - balSh
+    print('Wallet_balance_total = ' + str(wallet_balance_total1))
 
     return wallet_balance_total
 
