@@ -38,12 +38,13 @@ def fhUSDM_initUP(lblPriceInUP_):
 
     #------------------------ 1th trading -------------------------
     ####### SHORT
-    ratio = float(round(1/int(cnfg.CTrades[1]),2)) #Ratio for two trades
-    print('\nfhUSDM_initUP() ratio  = ' + str(ratio))
-    cnfg.positShUp[0] = truncate(cnfg.balancesShU[1] * ratio / cnfg.costsUP[0], qtyStep) #calculate count in first position
+    ratioSh = float(round(1/int(cnfg.CTrades[1]),2)) #Ratio for first
+    print('fhUSDM_initUP() Short ratioSh: ' + str(ratioSh)+ '; cnfg.loopItems: ' + str(cnfg.loopItems))
+    cnfg.balancesShU[1] = cnfg.balancesShU[1] * ratioSh
+    print('\nfhUSDM_initUP() Short cnfg.balancesShU[1] * ratio  = ' + str(cnfg.balancesShU[1]))
+    cnfg.positShUp[0] = truncate(cnfg.balancesShU[1] / cnfg.costsUP[0], qtyStep) #calculate count in first position
     #cnfg.balanceShRatU[0] = cnf.balancesSh[1]*ratio #balance on first trade Short
 
-    print('fhUSDM_initUP() cnfg.balancesShU[1]  = ' + str(cnfg.balancesShU[1]))
     cnfg.balanceShRatU[0] = round(cnfg.positShUp[0] * cnfg.costsUP[0], 2)  # REWRITE balance after truncate quontity !!!!!!
     print('fhUSDM_initUP()  Qty(short)  cnfg.positShUp[0]  = ' + str(cnfg.positShUp[0]))
     cnfg.costTP_ShortU[0] = round(cnfg.costsUP[0]*(1-float(cnfg.shTPfirst[0])/100),cnfg.pricePrc) #cost first TP
@@ -64,10 +65,11 @@ def fhUSDM_initDOWN(lblPriceInDn_):
     
     #------------------------ 1th trading -------------------------
     ####### LONG
-    ratio = float(round(1/int(cnfg.CTrades[0]),2)) #Ratio for two trades
-    print('\nfhUSDM_initDOWN() ratio  = ' + str(ratio))
-    cnfg.positLngDn[0] = truncate(cnfg.balancesLngDn[1] * ratio / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
-    print('\nfhUSDM_initDOWN() cnfg.balancesLngDn[1] = ' + str(round(cnfg.balancesLngDn[1],2)))
+    ratioLng = float(round(1/int(cnfg.CTrades[0]),2)) #Ratio for first
+    print('fhUSDM_initDOWN Long ratioLng: ' + str(ratioLng)+ '; cnfg.loopItems: ' + str(cnfg.loopItems))
+    cnfg.balancesLngDn[1] = cnfg.balancesLngDn[1] * ratioLng
+    print('\nfhUSDM_initDOWN() Long cnfg.balancesLngDn[1] * ratio = ' + str(cnfg.balancesLngDn[1]))
+    cnfg.positLngDn[0] = truncate(cnfg.balancesLngDn[1] / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
 
     #print('initDown Qty(long)  cnfg.positLngDn[0] = ' + str(cnfg.balancesLngDn[1] / cnfg.costsDn[0]))
     print('fhUSDM_initDOWN() Qty(long)  cnfg.positLngDn[0] = ' + str(cnfg.positLngDn[0]))
@@ -90,12 +92,20 @@ def initCurrent(): #init with second trade and more
     print('initCurrent()  wallet_balance_total: ' + str(walletBalTotal))
 
     #------ Init for Short
+    ratioShCrr = float(round(1/int(cnfg.CTrades[1]-cnfg.loopItems),2)) #Ratio for current
+    walletBalTotal = round(walletBalTotal * ratioShCrr,2)
+    print('initCurrent() Short ratioShCrr: ' + str(ratioShCrr)+ '; cnfg.loopItems: ' + str(cnfg.loopItems))
+    print('initCurrent() Short wallet_balance_total * ratio: ' + str(walletBalTotal))
     cnfg.positSh[cnfg.loopItems] = truncate(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
     print('initCurrent()  cnfg.positSh[cnfg.loopItems] : ' + str(cnfg.positSh[cnfg.loopItems] ))
     cnfg.costTP_Short[cnfg.loopItems] = round(currGb_ * (1 - float(cnfg.shTPfirst[cnfg.loopItems]) / 100), cnfg.pricePrc) # calculate TP
     cnfg.costSL_Short[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.shSLfirst[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
 
     #------ Init for Long
+    ratioLngCrr = float(round(1/int(cnfg.CTrades[0]-cnfg.loopItems),2)) #Ratio for current
+    walletBalTotal = round(walletBalTotal * ratioLngCrr,2)
+    print('initCurrent() Long ratioLngCrr: ' + str(ratioLngCrr) + '; cnfg.loopItems: ' + str(cnfg.loopItems))
+    print('initCurrent() Long  wallet_balance_total * ratio: ' + str(walletBalTotal))
     fee1 = round(walletBalTotal * float(feeMarket), 4)  # fee on market trade, buy and sell
     cnfg.positLng[cnfg.loopItems] = truncate(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
     print('initCurrent()  cnfg.positLng[cnfg.loopItems] : ' + str(cnfg.positLng[cnfg.loopItems] ))
