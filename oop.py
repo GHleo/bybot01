@@ -216,10 +216,10 @@ class OOP:
         self.lblFtr11 = ttk.Label(self.panel1, text='3trd - TP/SL(%):')
         self.lblFtr11.grid(column=14, row=0, padx=3)
         self.cmbFtrUpTP_Sh3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set profit (%) for Short 3
-        self.cmbFtrUpTP_Sh3.current(3)
+        self.cmbFtrUpTP_Sh3.current(9)
         self.cmbFtrUpTP_Sh3.grid(column=15, row=0)
         self.cmbFtrUpSl_Sh3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) for Short 3
-        self.cmbFtrUpSl_Sh3.current(2)
+        self.cmbFtrUpSl_Sh3.current(7)
         self.cmbFtrUpSl_Sh3.grid(column=16, row=0,  sticky='E')
 
         # self.lblFtrP1_07 = ttk.Label(self.panel1, text='3trd - TP/SL(%):')
@@ -244,10 +244,10 @@ class OOP:
         self.lblFtrP1_078 = ttk.Label(self.panel1, text='3trd - TP/SL(%):')
         self.lblFtrP1_078.grid(column=14, row=1, padx=3)
         self.cmbFtrDnTP_Lng3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set profit (%) Down for Long 3
-        self.cmbFtrDnTP_Lng3.current(3)
+        self.cmbFtrDnTP_Lng3.current(9)
         self.cmbFtrDnTP_Lng3.grid(column=15, row=1)
         self.cmbFtrDnSl_Lng3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) Down for Long 3
-        self.cmbFtrDnSl_Lng3.current(2)
+        self.cmbFtrDnSl_Lng3.current(7)
         self.cmbFtrDnSl_Lng3.grid(column=16, row=1)
 
 # 4------- for UP
@@ -633,7 +633,7 @@ class OOP:
             cnfg.shTPfirst[1]=float(self.cmbFtrUpTP_Sh2.get()) #get second TP percent Up Short
             cnfg.shTPfirst[2] =float(self.cmbFtrUpTP_Sh3.get()) #get fird TP percent Up Short
             cnfg.shTPfirst[3] =float(self.cmbFtrUpTP_Sh4.get()) #get fourth TP percent Up Short
-            #print('usdmInit Up cnfg.shTPfirst ' + str(cnfg.shTPfirst))
+            print('usdmInit(self) Up cnfg.shTPfirst ' + str(cnfg.shTPfirst))
             #cnfg.lngTPfirst[0]=float(self.cmbFtrUpTP_Lng1.get()) #get first TP percent Up Long
             #cnfg.lngTPfirst[1]=float(self.cmbFtrUpTP_Lng2.get()) #get second TP percent Up Long
             #cnfg.lngTPfirst[2]=float(self.cmbFtrUpTP_Lng3.get()) #get fird TP percent Up Long
@@ -644,7 +644,7 @@ class OOP:
             cnfg.shSLfirst[1]=float(self.cmbFtrUpSl_Sh2.get()) #get second SL percent Up Short
             cnfg.shSLfirst[2]=float(self.cmbFtrUpSl_Sh3.get()) #get fird SL percent Up Short
             cnfg.shSLfirst[3]=float(self.cmbFtrUpSl_Sh4.get()) #get fourth SL percent Up Short
-            #print('usdmInit Up cnfg.shSLfirst ' + str(cnfg.shSLfirst))
+            print('usdmInit(self) Up cnfg.shSLfirst ' + str(cnfg.shSLfirst))
             # cnfg.lngSLfirst[0]=float(self.cmbFtrUpSl_Lng1.get()) #get first SL percent Up Long
             # cnfg.lngSLfirst[1]=float(self.cmbFtrUpSl_Lng2.get()) #get second SL percent Up Long
             # cnfg.lngSLfirst[2]=float(self.cmbFtrUpSl_Lng3.get()) #get fird SL percent Up Long
@@ -661,7 +661,7 @@ class OOP:
             cnfg.lngTPfirstDn[1] = float(self.cmbFtrDnTP_Lng2.get())  # get first TP percent Long for Down
             cnfg.lngTPfirstDn[2] = float(self.cmbFtrDnTP_Lng3.get())  # get first TP percent Long for Down
             cnfg.lngTPfirstDn[3] = float(self.cmbFtrDnTP_Lng4.get())  # get first TP percent Long for Down
-            #print('usdmInit Dn cnfg.lngTPfirstDn ' + str( cnfg.lngTPfirstDn))
+            print('usdmInit(self) Dn cnfg.lngTPfirstDn ' + str(cnfg.lngTPfirstDn))
 
             # cnfg.shSLfirstDn[0] = float(self.cmbFtrDnSl_Sh1.get())  # get first SL percent Short
             # cnfg.shSLfirstDn[1] = float(self.cmbFtrDnSl_Sh2.get())  # get first SL percent Short
@@ -672,7 +672,7 @@ class OOP:
             cnfg.lngSLfirstDn[1] = float(self.cmbFtrDnSl_Lng2.get())  # get first SL percent Long for Down
             cnfg.lngSLfirstDn[2] = float(self.cmbFtrDnSl_Lng3.get())  # get first SL percent Long for Down
             cnfg.lngSLfirstDn[3] = float(self.cmbFtrDnSl_Lng4.get())  # get first SL percent Long for Down
-            #print('usdmInit Dn cnfg.lngSLfirstDn ' + str(cnfg.lngSLfirstDn))
+            print('usdmInit(self) Dn cnfg.lngSLfirstDn ' + str(cnfg.lngSLfirstDn))
 
             cnfg.firstInPrcUP[0] = float(self.cmbFtr03.get())
             cnfg.firstInPrcDn[0] = float(self.cmbFtr10.get())
