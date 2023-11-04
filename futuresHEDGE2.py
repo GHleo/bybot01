@@ -91,7 +91,7 @@ def initCurrent(): #init with second trade and more
     print('initCurrent()  wallet_balance_total: ' + str(walletBalTotal))
 
     #------ Init for Short
-    ratioShCrr = cnfg.ratioSh * (cnfg.loopItems + 1) #initial rate multiply on currnt step
+    ratioShCrr = cnfg.ratioSh * cnfg.loopItems #initial rate multiply on currnt step
     # if cnfg.CTrades[1] != cnfg.loopItems: #exclude division by zero
     #     ratioShCrr = float(round(1/int(cnfg.CTrades[1]-cnfg.loopItems),2)) #Ratio for current
     walletBalTotal = round(walletBalTotal * ratioShCrr,2)
@@ -103,7 +103,7 @@ def initCurrent(): #init with second trade and more
     cnfg.costSL_Short[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.shSLfirst[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
 
     #------ Init for Long
-    ratioLngCrr = cnfg.ratioLn * (cnfg.loopItems + 1) #initial rate multiply on currnt step
+    ratioLngCrr = cnfg.ratioLn * cnfg.loopItems #initial rate multiply on currnt step
     # if cnfg.CTrades[0] != cnfg.loopItems: #exclude division by zero
     #     ratioLngCrr = float(round(1/int(cnfg.CTrades[0]-cnfg.loopItems),2)) #Ratio for current
     walletBalTotal = round(walletBalTotal * ratioLngCrr,2)
@@ -172,7 +172,7 @@ def mainLoop(pb00_, scrMain_, exept_):
     lmt_ = 4
     cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP,cnfg.costsUP[0], cnfg.costTP_ShortU[0], cnfg.costSL_ShortU[0],cnfg.positShUp[0], exept_,'LIMIT', 0)
     cnfg.orderID_buy, cnfg.retMsg_buy = createOrder('Buy', cnfg.levDn, cnfg.costsDn[0], cnfg.costTP_LongDn[0], cnfg.costSL_LongDn[0],cnfg.positLngDn[0], exept_,'LIMIT', 0)
-    #cnfg.loopItems += 1
+    cnfg.loopItems += 1
     # ordersInfo = cnfg.session.get_open_orders(category="linear", symbol=cnfg.pair, openOnly=0, limit=2)
     # ordersInfo2 = ordersInfo["result"]["list"]
     scrMain_.insert(tk.END, '\nSell ID: ' + str(cnfg.orderID_sell) + '; Buy ID:: ' + str(cnfg.orderID_buy))
@@ -202,7 +202,7 @@ def mainLoop(pb00_, scrMain_, exept_):
             positionInfo = cnfg.session.get_positions(category="linear", symbol=cnfg.pair)
             print('ml positionInfo: ' + str(positionInfo))
             got_positions = positionInfo["result"]["list"]
-            if got_positions[0]['unrealisedPnl']:
+            if got_positions[0]['unrealisedPnl']: #if enter to position
                 Pnl_ = 0.0
                 print('ml Position Info -> Pnl: ' + str(got_positions[0]['unrealisedPnl']))
                 Pnl_ += round(float(got_positions[0]['unrealisedPnl']), 3)
@@ -224,12 +224,12 @@ def mainLoop(pb00_, scrMain_, exept_):
                     print('ml next trade!  cnfg.orderID_buy: ' + str(cnfg.orderID_buy))
                     scrMain_.insert(tk.END, '\ncreate Order Buy; buy ID: ' + str(cnfg.orderID_buy) + '; ' + str(dt.now().strftime('%H:%M:%S')))
                     scrMain_.insert(tk.END, '\nTotal Pnl: ' + str(cnfg.pnlTotal))
-            if not firstSellOrder and positionInfo and not cnfg.orderSStatus: #if sell(short)
+            if not firstSellOrder and positionInfo and not cnfg.orderSStatus: #if sell(short) delete Buy order
                 delBuyOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=cnfg.orderID_buy)
                 cnfg.orderSStatus = True
                 cnfg.orderBStatus = True
                 print('ordersInfo delBuyOrder: ' + str(delBuyOrder))
-            if not firstBuyOrder and positionInfo and not cnfg.orderBStatus: #if buy(long)
+            if not firstBuyOrder and positionInfo and not cnfg.orderBStatus: #if buy(long) delete Sell order
                 delSellOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=cnfg.orderID_sell)
                 cnfg.orderBStatus = True
                 cnfg.orderSStatus = True
