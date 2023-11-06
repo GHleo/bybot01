@@ -85,10 +85,11 @@ def initCurrent(): #init with second trade and more
     qprecision, priceScale, tickSize = quantityPrecision(cnfg.pair)
     qtyStep = int(str(qprecision)[::-1].find('.'))
     cnfg.pricePrc = priceScale
-    walletBalTotal = calculateBalance()
+    walletBalTotal1 = calculateBalance()
+    walletBalTotal = round(walletBalTotal1 * (1 - 0.01),2)
 
     currGb_ = round(currGb, priceScale)  # cost for short then UP 1th in ($)
-    print('initCurrent()  wallet_balance_total: ' + str(walletBalTotal))
+    print('initCurrent()  wallet_balance_total1: ' + str(walletBalTotal1) + '; wallet_balance_total: ' + str(walletBalTotal))
 
     #------ Init for Short
     ratioShCrr = cnfg.ratioSh * cnfg.loopItems #initial rate multiply on currnt step
