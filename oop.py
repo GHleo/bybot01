@@ -5,7 +5,7 @@ from tkinter import scrolledtext
 from datetime import datetime as dt
 #import pandas as pd
 #import futuresHEDGE as fHedge
-import futuresHEDGE2 as fHedge2
+import futuresUSDM as fUSDM
 
 import config as cnfg
 
@@ -90,7 +90,7 @@ class OOP:
         self.vBal.set(0.00)
         self.lblBal = ttk.Label(self.panel0, textvariable=self.vBal) #Output balance
         self.lblBal.grid(column=0, row=0)
-        btnBal0 = ttk.Button(self.panel0, text='Calculate', command=self.calc)
+        btnBal0 = ttk.Button(self.panel0, text='Get balance', command=self.calc)
         btnBal0.grid(column=0, row=1)
 
         label_00 = ttk.Label(self.panel1, text="Base:")
@@ -105,7 +105,7 @@ class OOP:
         self.cmbFtrP1_01.grid(column=1, padx=6,row=1)
         #self.cmbFtrP1_01.bind("<<ComboboxSelected>>", self.getQuote)
 
-        btnFtr01 = ttk.Button(self.panel1, text='Init', command=self.usdmInit)
+        btnFtr01 = ttk.Button(self.panel1, text='Calculate', command=self.usdmInit)
         btnFtr01.grid(column=1, row=2, pady=4, sticky='W')
 
 # ------- for UP
@@ -599,8 +599,8 @@ class OOP:
 
     def usdmTrade(self):
         if cnfg.init == True:
-            fHedge2.mainLoop(self.pbT2S2,self.scrlFtrMain,self.vBExept)
-            #fHedge2.test(self.vBExept)
+            fUSDM.mainLoop(self.pbT2S2,self.scrlFtrMain,self.vBExept)
+            #fUSDM.test(self.vBExept)
             #fHedge.createOrder(self.vBExept)
         else:
             print("First press Init button!")
@@ -614,7 +614,7 @@ class OOP:
         print(cnfg.pair)
         # cnfg.LevS[0] = self.cmbFtr04.get() # Leverage for Short
         # cnfg.LevS[1] = self.cmbFtr09.get() # Leverage for Long
-        fHedge2.fhUSDM_Calculate(self.vPrice, self.vBal, self.vTBsh,self.vTBlng)
+        fUSDM.fhUSDM_Calculate(self.vPrice, self.vBal, self.vTBsh,self.vTBlng)
         #cnfg.init = True #check is press Init?
         cnfg.calculate = True  # check is press Init?
     def usdmInit(self):
@@ -677,8 +677,8 @@ class OOP:
             cnfg.firstInPrcUP[0] = float(self.cmbFtr03.get())
             cnfg.firstInPrcDn[0] = float(self.cmbFtr10.get())
 
-            fHedge2.fhUSDM_initDOWN(self.vPrice3)
-            fHedge2.fhUSDM_initUP(self.vPrice2)
+            fUSDM.fhUSDM_initDOWN(self.vPrice3)
+            fUSDM.fhUSDM_initUP(self.vPrice2)
 
             cnfg.init = True #check is press Init?
             cnfg.calculate = False
