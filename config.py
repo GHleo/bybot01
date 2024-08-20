@@ -83,6 +83,7 @@ firstInPrcDn = [0.0] # first in (%) then Down
 
 orderID_buy, orderID_sellTP, orderID_sellSL = 'null', 'null', 'null' # id order for Long
 orderID_sell, orderID_buyTP, orderID_buySL = 'null', 'null', 'null' # id order for Short
-orderSStatus, orderBStatus = False, False
-isUp, isDown = False, False
+retMsg_sell, retMsg_buy = '','' #get status orders
+#orderSStatus, orderBStatus = False, False
+isUp, isDown = True, True
 

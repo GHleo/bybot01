@@ -170,20 +170,24 @@ def mainLoop(pb00_, scrMain_, exept_):
             scrMain_.insert(tk.END,'\nPrice: ' + str(mlastPrice) + '; PnL: ' + str(Pnl_) + '; Total PnL: ' + str(cnfg.pnlTotal) + '; Current loop: ' + str(cnfg.loopItems) + '; ' + str(dt.now().strftime('%H:%M:%S')))
 
             ordersInfo = cnfg.session.get_open_orders(category="linear", symbol=cnfg.pair, openOnly=0, limit=lmt_)
-            print('ml ordersInfo: ' + str(ordersInfo) + '; Total PnL: ' + str(cnfg.pnlTotal))
+            print('ml ordersInfo: ' + str(ordersInfo))
+            print('Total PnL: ' + str(cnfg.pnlTotal))
             ordersInfo2 = ordersInfo["result"]["list"]
             ordInfoLen = len(ordersInfo2)
             firstSellOrder = searchOrder(ordersInfo2, ordInfoLen, cnfg.orderID_sell)
-            if not firstSellOrder and not cnfg.isDown: # What trend?
-                cnfg.trades = cnfg.CTrades[1]
-                cnfg.isUp = True
-            print('ml firstSellOrder: ' + str(firstSellOrder))
-            firstBuyOrder = searchOrder(ordersInfo2, ordInfoLen, cnfg.orderID_buy)
-            if not firstBuyOrder and not cnfg.isUp: # What trend?
-                cnfg.trades = cnfg.CTrades[0]
-                cnfg.isDown = True
 
-            print('ml firstBuyOrder: ' + str(firstBuyOrder))
+            if not firstSellOrder and cnfg.isDown: # What trend - Short?
+                cnfg.trades = cnfg.CTrades[1]
+                cnfg.isUp = False
+                print('ml IN firstSellOrder: ' + str(firstSellOrder))
+            firstBuyOrder = searchOrder(ordersInfo2, ordInfoLen, cnfg.orderID_buy)
+            if not firstBuyOrder and cnfg.isUp: # What trend - Buy?
+                cnfg.trades = cnfg.CTrades[0]
+                cnfg.isDown = False
+                print('ml IN firstBuyOrder: ' + str(firstBuyOrder))
+
+            print('ml firstBuyOrder: ' + str(firstBuyOrder) + '; ml firstSellOrder: ' + str(firstSellOrder))
+
             positionInfo = cnfg.session.get_positions(category="linear", symbol=cnfg.pair)
             print('ml positionInfo: ' + str(positionInfo))
             got_positions = positionInfo["result"]["list"]
@@ -191,35 +195,38 @@ def mainLoop(pb00_, scrMain_, exept_):
                 Pnl_ = 0.0
                 print('ml Position Info -> Pnl: ' + str(got_positions[0]['unrealisedPnl']))
                 Pnl_ += round(float(got_positions[0]['unrealisedPnl']), 3)
-
             positionValue = got_positions[0]['positionValue']
             print('ml got_positions[positionValue]: ' + str(positionValue))
             if not positionValue and (cnfg.loopItems < cnfg.trades) and (Pnl_ < 0): #if position close and need make new order
                 cnfg.loopItems += 1
                 initCurrent()  # Initialisation data
                 print('ml if position over!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ')
-                if cnfg.isUp:
-                    cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsUP[0], cnfg.costTP_Short[cnfg.loopItems], cnfg.costSL_Short[cnfg.loopItems],cnfg.positSh[cnfg.loopItems], exept_, 'MARKET', 0)
-                    print('ml next trade!  cnfg.orderID_sell: ' + str(cnfg.orderID_sell))
-                    scrMain_.insert(tk.END, '\ncreate Order Sell; sell ID: ' + str(cnfg.orderID_sell) + '; ' + str(dt.now().strftime('%H:%M:%S')))
-                    scrMain_.insert(tk.END, '\nTotal Pnl: ' + str(cnfg.pnlTotal))
                 if cnfg.isDown:
                     cnfg.pnlTotal += Pnl_
+                    cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsUP[0], cnfg.costTP_Short[cnfg.loopItems], cnfg.costSL_Short[cnfg.loopItems],cnfg.positSh[cnfg.loopItems], exept_, 'MARKET', 0)
+                    print('ml next trade!  cnfg.orderID_sell: ' + str(cnfg.orderID_sell) + '; cnfg.retMsg_sell: ' + str(cnfg.retMsg_sell))
+                    scrMain_.insert(tk.END, '\ncreate Order Sell; sell ID: ' + str(cnfg.orderID_sell) + '; ' + str(dt.now().strftime('%H:%M:%S')))
+                    scrMain_.insert(tk.END, '\nTotal Pnl: ' + str(cnfg.pnlTotal))
+                if cnfg.isUp:
+                    cnfg.pnlTotal += Pnl_
                     cnfg.orderID_buy, cnfg.retMsg_buy = createOrder('Buy', cnfg.levDn, cnfg.costsDn[0], cnfg.costTP_Long[cnfg.loopItems], cnfg.costSL_Long[cnfg.loopItems], cnfg.positLng[cnfg.loopItems], exept_, 'MARKET', 0)
-                    print('ml next trade!  cnfg.orderID_buy: ' + str(cnfg.orderID_buy))
+                    print('ml next trade!  cnfg.orderID_buy: ' + str(cnfg.orderID_buy)+ '; cnfg.retMsg_buy: ' + str(cnfg.retMsg_buy))
                     scrMain_.insert(tk.END, '\ncreate Order Buy; buy ID: ' + str(cnfg.orderID_buy) + '; ' + str(dt.now().strftime('%H:%M:%S')))
                     scrMain_.insert(tk.END, '\nTotal Pnl: ' + str(cnfg.pnlTotal))
-            if not firstSellOrder and positionInfo and not cnfg.orderSStatus: #if sell(short) delete Buy order
+            # If order waw triggered - Deleting other order
+            if not firstSellOrder and positionInfo and cnfg.retMsg_sell : #if sell(short) delete Buy order
+                print('!!!!!!!!!firstSellOrder: ' + str(firstSellOrder) + '; cnfg.retMsg_sell: ' + str(cnfg.retMsg_sell))
+                cnfg.retMsg_sell = ''
+                cnfg.retMsg_buy = ''
                 delBuyOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=cnfg.orderID_buy)
-                cnfg.orderSStatus = True
-                cnfg.orderBStatus = True
-                print('ordersInfo delBuyOrder: ' + str(delBuyOrder))
-            if not firstBuyOrder and positionInfo and not cnfg.orderBStatus: #if buy(long) delete Sell order
+                print('ordersInfo delBuyOrder: ' + str(delBuyOrder) + '; cnfg.retMsg_sell: ' + str(cnfg.retMsg_sell))
+            if not firstBuyOrder and positionInfo and cnfg.retMsg_buy: #if buy(long) delete Sell order
+                print('!!!!!!!!!firstBuyOrder: ' + str(firstBuyOrder) + '; cnfg.retMsg_buy: ' + str(cnfg.retMsg_buy))
+                cnfg.retMsg_buy = ''
+                cnfg.retMsg_sell = ''
                 delSellOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=cnfg.orderID_sell)
-                cnfg.orderBStatus = True
-                cnfg.orderSStatus = True
-                print('ordersInfo delSellOrder: ' + str(delSellOrder))
-
+                print('ordersInfo delSellOrder: ' + str(delSellOrder)+ '; cnfg.retMsg_buy: ' + str(cnfg.retMsg_buy))
+            print('cnfg.retMsg_sell: ' + str(cnfg.retMsg_sell) + '; cnfg.retMsg_buy: ' + str(cnfg.retMsg_buy) + '\n')
             thread = threading.Thread(target=run_progressbar(pb00_, cnfg.chVarDelay_GL))
             thread.start()
         except Exception as e:
