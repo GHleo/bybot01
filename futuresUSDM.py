@@ -227,8 +227,10 @@ def mainLoop(pb00_, scrMain_, exept_):
                     print('ml Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems-1]) + ' Now: ' + str(diffPercDn) +' %')
                     if tpLongFirst/2 >= diffPercLn:
                         print('ml edit Order -> ')
-                        cnfg.orderID_buy, cnfg.retMsg_buy = editOrder(cnfg.costTP_Long[cnfg.loopItems],cnfg.costSL_Long[cnfg.loopItems], exept_,0)
-                        print('ml edit Order -> cnfg.retMsg_buy: ', cnfg.retMsg_buy)
+                        upLng = mlastPrice * (1 + tpLongFirst/2 )
+                        print('ml edit Order -> mlastPrice: ' + str(mlastPrice) + '; tpLongFirst/2: ' + str(tpLongFirst/2) + '; upLng: ' + str(upLng))
+                        #cnfg.orderID_buy, cnfg.retMsg_buy = editOrder(cnfg.costTP_Long[cnfg.loopItems],cnfg.costSL_Long[cnfg.loopItems], exept_,0)
+                        #print('ml edit Order -> cnfg.retMsg_buy: ', cnfg.retMsg_buy)
                 if cnfg.isDown:
                     print('ml diff Short ->' + ' Original price: ' + str(cnfg.orderCostDn) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.orderCostDn,2)) +' $'+ ' Diff: ' + str(diffPercDn) + ' %')
 
