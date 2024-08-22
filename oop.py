@@ -117,7 +117,7 @@ class OOP:
         label_01.grid(column=4, row=0, padx=3)
 
         self.cmbFtrP1_02 = ttk.Combobox(self.panel1, values=cnfg.cntTrades, width=4)# set count trades for Short then UP
-        self.cmbFtrP1_02.current(1)
+        self.cmbFtrP1_02.current(2)
         self.cmbFtrP1_02.grid(column=7, row=0)
 
         # label_02 = ttk.Label(self.panel1, text="UPLong")
@@ -131,17 +131,17 @@ class OOP:
         label_04.grid(column=4, row=1, padx=3, sticky='W')
 
         self.cmbFtrP1_11 = ttk.Combobox(self.panel1, values=cnfg.cntTrades, width=4)# set count trades for Long then Dn
-        self.cmbFtrP1_11.current(1)
+        self.cmbFtrP1_11.current(2)
         self.cmbFtrP1_11.grid(column=7, row=1)
 
 # 1------- for Up
         self.lblFtr05 = ttk.Label(self.panel1, text='1trd - TP/SL(%):')
         self.lblFtr05.grid(column=8, row=0, padx=3)
         self.cmbFtrUpTP_Sh1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set profit (%) for Short 1
-        self.cmbFtrUpTP_Sh1.current(9)
+        self.cmbFtrUpTP_Sh1.current(3)
         self.cmbFtrUpTP_Sh1.grid(column=9, row=0)
         self.cmbFtrUpSl_Sh1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) for Short 1
-        self.cmbFtrUpSl_Sh1.current(7)
+        self.cmbFtrUpSl_Sh1.current(3)
         self.cmbFtrUpSl_Sh1.grid(column=10, row=0)
 
         # self.lblFtrP1_05 = ttk.Label(self.panel1, text='1trd - TP/SL(%):')
@@ -165,10 +165,10 @@ class OOP:
         self.lblFtrP1_055 = ttk.Label(self.panel1, text='1trd - TP/SL(%):')
         self.lblFtrP1_055.grid(column=8, row=1, padx=3)
         self.cmbFtrDnTP_Lng1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set profit (%) Down for Long 1
-        self.cmbFtrDnTP_Lng1.current(9)
+        self.cmbFtrDnTP_Lng1.current(3)
         self.cmbFtrDnTP_Lng1.grid(column=9, row=1)
         self.cmbFtrDnSl_Lng1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) Down for Long 1
-        self.cmbFtrDnSl_Lng1.current(7)
+        self.cmbFtrDnSl_Lng1.current(3)
         self.cmbFtrDnSl_Lng1.grid(column=10, row=1)
 
 # 2------- for UP

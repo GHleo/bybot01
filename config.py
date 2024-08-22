@@ -1,8 +1,10 @@
 
 from Key import api_secret, api_key
-import requests
+#import requests
 from pybit.unified_trading import HTTP
-from pybit import helpers
+#from pybit import helpers
+import logging
+import os
 
 Accounts = ['Unified Trading', 'Funding']
 
@@ -38,7 +40,7 @@ cntTrades = ['0', '1', '2', '3', '4'] # for count trades
 CTrades = [0,0] # get count for trades 0-long, 1-short
 crrTrades = [0,0] # Current trades for short and long
 ratioSh, ratioLn = 1, 1
-firstIn = ['0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','1','1.2','1.4','1.5','1.75','2','2.5','3']
+firstIn = ['0','0.05','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','1','1.2','1.4','1.5','1.75','2','2.5','3']
 #firstInLng = ['0','0.1','0.25','0.5','1','1.5','1.75','2','2.5','3','3.5','4','5','6','7','8','9','10','15','20']
 lev= ['1', '2', '3', '4', '5','6','7','8','9','10','15','20','25','30','35','40','45','50','100']
 #LevS=[0,0] # get count for lev 0-short, 1-long
@@ -86,4 +88,16 @@ orderID_sell, orderID_buyTP, orderID_buySL = 'null', 'null', 'null' # id order f
 retMsg_sell, retMsg_buy = '','' #get status orders
 #orderSStatus, orderBStatus = False, False
 isUp, isDown = True, True
+
+orderCostLn = 0.0 # Current cost then order create for Long
+orderCostDn = 0.0 # Current cost then order create for Short
+
+# Подключаем логирование
+logging.basicConfig(
+    format="%(asctime)s [%(levelname)-5.5s] %(message)s",
+    level=logging.INFO,
+    handlers=[
+        logging.FileHandler("{path}/logs/{fname}.log".format(path=os.path.dirname(os.path.abspath(__file__)), fname="tradeLog")),
+        logging.StreamHandler()])
+log = logging.getLogger('')
 
