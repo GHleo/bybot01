@@ -252,7 +252,7 @@ def mainLoop(pb00_, scrMain_, exept_):
             if not positionValue and (cnfg.loopItems < cnfg.trades) and (Pnl_ < 0): #if position close and need make new order
                 cnfg.loopItems += 1
                 initCurrent()  # Initialisation data
-                print('ml if position over!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ')
+                print('ml if position over!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ')
                 if cnfg.isDown:
                     cnfg.pnlTotal += Pnl_
                     cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsUP[0], cnfg.costTP_Short[cnfg.loopItems], cnfg.costSL_Short[cnfg.loopItems],cnfg.positSh[cnfg.loopItems], exept_, 'MARKET', 0)
