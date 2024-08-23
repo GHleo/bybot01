@@ -42,8 +42,8 @@ def fhUSDM_initUP(lblPriceInUP_):
     print('\nfhUSDM_initUP() Short ratioSh: ' + str(cnfg.ratioSh)+ '; cnfg.loopItems: ' + str(cnfg.loopItems))
     cnfg.balanceShOnLev = cnfg.balanceShOnLev * cnfg.ratioSh
     print('fhUSDM_initUP() Short cnfg.balanceShOnLev] * ratio  = ' + str(cnfg.balanceShOnLev))
-    #cnfg.positShUp[0] = truncate(cnfg.balanceShOnLev / cnfg.costsUP[0], qtyStep) #calculate count in first position
-    cnfg.positShUp[0] = round_up(cnfg.balanceShOnLev / cnfg.costsUP[0], qtyStep) # calculate count in first position
+    cnfg.positShUp[0] = truncate(cnfg.balanceShOnLev / cnfg.costsUP[0], qtyStep) #calculate count in first position
+    #cnfg.positShUp[0] = round_up(cnfg.balanceShOnLev / cnfg.costsUP[0], qtyStep) # calculate count in first position
 
     #cnfg.balanceShRatU[0] = cnf.balancesSh[1]*ratio #balance on first trade Short
 
@@ -71,8 +71,8 @@ def fhUSDM_initDOWN(lblPriceInDn_):
     print('\nfhUSDM_initDOWN Long ratioLng: ' + str(cnfg.ratioLn)+ '; cnfg.loopItems: ' + str(cnfg.loopItems))
     cnfg.balanceLnOnLev = round(cnfg.balanceLnOnLev * cnfg.ratioLn,2)
     print('fhUSDM_initDOWN() Long cnfg.balanceLnOnLev] * ratio = ' + str(cnfg.balanceLnOnLev))
-    #cnfg.positLngDn[0] = truncate(cnfg.balanceLnOnLev / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
-    cnfg.positLngDn[0] = round_up(cnfg.balanceLnOnLev / cnfg.costsDn[0],qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
+    cnfg.positLngDn[0] = truncate(cnfg.balanceLnOnLev / cnfg.costsDn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
+    #cnfg.positLngDn[0] = round_up(cnfg.balanceLnOnLev / cnfg.costsDn[0],qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
     print('fhUSDM_initDOWN() Qty(long)  cnfg.positLngDn[0] = ' + str(cnfg.positLngDn[0]))
     cnfg.balanceLngRatDn[0] = round(cnfg.positLngDn[0] * cnfg.costsDn[0], 2)  # REWRITE balance after truncate quontity !!!!!!
     cnfg.costTP_LongDn[0] = round(cnfg.costsDn[0] * (1 + float(cnfg.lngTPfirstDn[0]) / 100), cnfg.pricePrc) #cost first TP
@@ -100,7 +100,10 @@ def initCurrent(): #init with second trade and more
     walletBalTotal = round(walletBalTotal * ratioShCrr,2)
     print('initCurrent() Short ratioShCrr: ' + str(ratioShCrr) + '; cnfg.loopItems: ' + str(cnfg.loopItems))
     print('initCurrent() Short wallet_balance_total * ratio: ' + str(walletBalTotal))
-    cnfg.positSh[cnfg.loopItems] = round_up(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
+    #cnfg.positSh[cnfg.loopItems] = round_up(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
+    cnfg.positSh[cnfg.loopItems] = truncate(walletBalTotal * cnfg.levUP / currGb_,qtyStep)  # calculate count for position
+    positSh = walletBalTotal * cnfg.levUP / currGb_
+    print('initCurrent()  positLng: ' + str(positSh) + '; qtyStep: ' + str(qtyStep))
     print('initCurrent()  cnfg.positSh[cnfg.loopItems] : ' + str(cnfg.positSh[cnfg.loopItems] ))
     cnfg.costTP_Short[cnfg.loopItems] = round(currGb_ * (1 - float(cnfg.shTPfirst[cnfg.loopItems]) / 100), cnfg.pricePrc) # calculate TP
     cnfg.costSL_Short[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.shSLfirst[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
@@ -113,7 +116,9 @@ def initCurrent(): #init with second trade and more
     print('initCurrent() Long ratioLngCrr: ' + str(ratioLngCrr) + '; cnfg.loopItems: ' + str(cnfg.loopItems))
     print('initCurrent() Long  wallet_balance_total * ratio: ' + str(walletBalTotal))
     fee1 = round(walletBalTotal * float(feeMarket), 4)  # fee on market trade, buy and sell
-    cnfg.positLng[cnfg.loopItems] = round_up(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
+    cnfg.positLng[cnfg.loopItems] = truncate(walletBalTotal * cnfg.levUP / currGb_, qtyStep)  # calculate count for position
+    positLng = walletBalTotal * cnfg.levUP  / currGb_ # calculate count for position
+    print('initCurrent()  positLng: ' + str(positLng) + '; qtyStep: ' + str(qtyStep))
     print('initCurrent()  cnfg.positLng[cnfg.loopItems] : ' + str(cnfg.positLng[cnfg.loopItems]))
     cnfg.costTP_Long[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.lngTPfirstDn[cnfg.loopItems]) / 100), cnfg.pricePrc) # calculate TP
     cnfg.costSL_Long[cnfg.loopItems] = round(currGb_ * (1 - float(cnfg.lngSLfirstDn[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
@@ -219,20 +224,27 @@ def mainLoop(pb00_, scrMain_, exept_):
                 if got_positions[0]['unrealisedPnl'] != '':
                     Pnl_ += round(float(got_positions[0]['unrealisedPnl']), 3)
                 diffPercLn = round((mlastPrice - cnfg.orderCostLn) / cnfg.orderCostLn * 100, 2)
-                diffPercDn = round((mlastPrice - cnfg.orderCostDn) / cnfg.orderCostDn * 100, 2)
+                diffPercDn = round((cnfg.orderCostDn - mlastPrice ) / mlastPrice * 100, 2)
                 if cnfg.isUp:
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems-1]
                     print('ml diff Long -> ' + ' Original price: ' + str(cnfg.orderCostLn) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.orderCostLn,2)) +' $'+ ' Diff: ' + str(diffPercLn) +' %' )
                     print('ml Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) +' %')
                     print('ml Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems-1]) + ' Now: ' + str(diffPercDn) +' %')
-                    if tpLongFirst/2 >= diffPercLn:
-                        print('ml edit Order -> ')
-                        upLng = mlastPrice * (1 + tpLongFirst/2 )
-                        print('ml edit Order -> mlastPrice: ' + str(mlastPrice) + '; tpLongFirst/2: ' + str(tpLongFirst/2) + '; upLng: ' + str(upLng))
+                    if (tpLongFirst/2 >= diffPercLn) and (diffPercLn > 0):
+                        #print('ml edit Order -> ')
+                        lnNextPrice = mlastPrice * (1 + tpLongFirst/2 )
+                        print('ml edit Long -> mlastPrice: ' + str(mlastPrice) + '; tpLongFirst/2: ' + str(tpLongFirst/2) + '; lnNextPrice: ' + str(lnNextPrice))
+                        lnNextTP = cnfg.costTP_Long[cnfg.loopItems] * (1 + tpLongFirst/2 )
+                        print('ml edit Long -> cnfg.costTP_Long[cnfg.loopItems]: ' + str(cnfg.costTP_Long[cnfg.loopItems]) + '; tpLongFirst/2: ' + str(tpLongFirst/2) + '; lnNextTP: ' + str(lnNextTP))
                         #cnfg.orderID_buy, cnfg.retMsg_buy = editOrder(cnfg.costTP_Long[cnfg.loopItems],cnfg.costSL_Long[cnfg.loopItems], exept_,0)
                         #print('ml edit Order -> cnfg.retMsg_buy: ', cnfg.retMsg_buy)
                 if cnfg.isDown:
-                    print('ml diff Short ->' + ' Original price: ' + str(cnfg.orderCostDn) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.orderCostDn,2)) +' $'+ ' Diff: ' + str(diffPercDn) + ' %')
+                    tpShortFirst = cnfg.shTPfirstDn[cnfg.loopItems - 1]
+                    print('ml diff Short ->' + ' Original price: ' + str(cnfg.orderCostDn) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(cnfg.orderCostDn - mlastPrice,2)) +' $'+ ' Diff: ' + str(diffPercDn) + ' %')
+                    if (tpShortFirst/2 >= diffPercDn) and (diffPercDn > 0):
+                        #print('ml edit Order -> ')
+                        shNextPrice = mlastPrice * (1 + tpShortFirst/2 )
+                        print('ml edit Short -> mlastPrice: ' + str(mlastPrice) + '; tpShortFirst/2: ' + str(tpShortFirst/2) + '; shNextPrice: ' + str(shNextPrice))
 
                 #print('ml Percentage difference for Short: ' + str(diffPercDn) +' %')
 

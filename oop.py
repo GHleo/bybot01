@@ -319,7 +319,7 @@ class OOP:
         self.lblFtr06 = ttk.Label(self.panel2s, text='Leverage:')
         self.lblFtr06.grid(column=0, row=4, padx=2, sticky='E')
         self.cmbFtr04 = ttk.Combobox(self.panel2s, values=cnfg.lev, width=4) # Leverage for Short
-        self.cmbFtr04.current(9)
+        self.cmbFtr04.current(0)
         self.cmbFtr04.grid(column=1, row=4, sticky='W')
 
         self.lblFtrP2_03 = ttk.Label(self.panel2s, text='TBalance:') # Balance * Leverage for Short
@@ -358,7 +358,7 @@ class OOP:
         self.lblFtr06l = ttk.Label(self.panel2l, text='Leverage:')
         self.lblFtr06l.grid(column=0, row=4, padx=2, sticky='E')
         self.cmbFtr09 = ttk.Combobox(self.panel2l, values=cnfg.lev, width=4) # Leverage for Long
-        self.cmbFtr09.current(9)
+        self.cmbFtr09.current(0)
         self.cmbFtr09.grid(column=1, row=4, sticky='W')
 
         self.lblTBsh = ttk.Label(self.panel2l, text='TBalance:') # Balance * Leverage for Long
