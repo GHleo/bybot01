@@ -588,9 +588,9 @@ class OOP:
         self.lblBExept1 = ttk.Label(self.panel3, textvariable=self.vBExept,
                                     font='times 8 bold')  # output BinanceAPIException
         self.lblBExept1.grid(column=1, row=0, sticky='W')
-        #
-        #         btnFtr03 = ttk.Button(self.panel2, text='Stop', command=self.delAllOrders)
-        #         btnFtr03.grid(column=0, row=4, pady=2, sticky='E')
+
+        btnFtr03 = ttk.Button(self.panel2, text='Stop', command=self.delAllOrders)
+        btnFtr03.grid(column=0, row=4, pady=2, sticky='E')
 
         self.vCoinM = tk.StringVar()
         self.vCoinM.set("Start")
@@ -686,6 +686,7 @@ class OOP:
             print("First press Calculate button!!!!!!!!!!")
             #self.vBExept.set("First press Init button!")
 
-
+    def delAllOrders(self):
+        fUSDM.delAllOrders(self.vBExept)
     #def getQuote(self,*args):
         #cnf.mbalancesQT = 0

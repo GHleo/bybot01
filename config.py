@@ -38,18 +38,18 @@ UpTrand, DnTrand = False, False
 tradeOpened = False
 cntTrades = ['0', '1', '2', '3', '4'] # for count trades
 CTrades = [0,0] # get count for trades 0-long, 1-short
-crrTrades = [0,0] # Current trades for short and long
+#crrTrades = [0,0] # Current trades for short and long
 ratioSh, ratioLn = 1, 1
 firstIn = ['0','0.05','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','1','1.2','1.4','1.5','1.75','2','2.5','3']
 #firstInLng = ['0','0.1','0.25','0.5','1','1.5','1.75','2','2.5','3','3.5','4','5','6','7','8','9','10','15','20']
-lev= ['1', '2', '3', '4', '5','6','7','8','9','10','15','20','25','30','35','40','45','50','100']
+lev= ['2', '3', '4', '5','6','7','8','9','10','15','20','25','30','35','40','45','50','100']
 #LevS=[0,0] # get count for lev 0-short, 1-long
 TBal=[0,0] # get count for lev 0-short, 1-long
 
-costTP_ShortU, costSL_ShortU = [0, 0], [0, 0] # Costs TP and SL for  short
-costTP_LongU, costSL_LongU = [0, 0], [0, 0] # Costs TP and SL for long
-costTP_ShortDn, costSL_ShortDn = [0, 0], [0, 0] # Costs TP and SL for  short
-costTP_LongDn, costSL_LongDn = [0,0,0,0], [0,0,0,0] # Costs TP and SL for long
+#costTP_ShortU, costSL_ShortU = [0, 0], [0, 0] # Costs TP and SL for  short
+#costTP_LongU, costSL_LongU = [0, 0], [0, 0] # Costs TP and SL for long
+#costTP_ShortDn, costSL_ShortDn = [0, 0], [0, 0] # Costs TP and SL for  short
+#costTP_LongDn, costSL_LongDn = [0,0,0,0], [0,0,0,0] # Costs TP and SL for long
 costTP_Short, costSL_Short = [0, 0, 0, 0], [0, 0, 0, 0] # Costs TP and SL for  short
 costTP_Long, costSL_Long = [0,0,0,0], [0,0,0,0] # Costs TP and SL for long
 lossesLngU, profitsLngU = [0,0,0,0], [0,0,0,0] # losses and profits for long then UP
@@ -91,6 +91,9 @@ isUp, isDown = True, True
 
 orderCostLn = 0.0 # Current cost then order create for Long
 orderCostDn = 0.0 # Current cost then order create for Short
+
+iOrder = 0 # count fo order
+iTimesTS = 0 # count for move cost of take profit and stop loss
 
 # Подключаем логирование
 logging.basicConfig(
