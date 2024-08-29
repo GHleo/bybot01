@@ -65,7 +65,7 @@ positLngDn,positShDn = [0, 0], [0, 0] #positions in trades then Down
 positLng,positSh = [0, 0, 0, 0], [0, 0, 0, 0] #positions in trades then Down
 lossesShU, profitsShU = [0, 0, 0, 0], [0, 0, 0, 0] # losses and profits for short then UP
 lossesShDn, profitsShDn = [0, 0, 0, 0], [0, 0, 0, 0] # losses and profits for short then Down
-costsUP, costsDn = [0,0,0,0], [0,0,0,0] # Costs pair(first in) for long and short then UP and Down
+costsSh, costsLn = [0,0,0,0], [0,0,0,0] # Costs pair(first in) for long and short then UP and Down
 #lngCheck, shCheck = 0,0 #Check box for Long or Short
 pricePrc = 0 #price precision
 
@@ -89,8 +89,8 @@ retMsg_sell, retMsg_buy = '','' #get status orders
 #orderSStatus, orderBStatus = False, False
 isUp, isDown = True, True
 
-orderCostLn = 0.0 # Current cost then order create for Long
-orderCostDn = 0.0 # Current cost then order create for Short
+#orderCostLn = 0.0 # Current cost then order create for Long
+#orderCostDn = 0.0 # Current cost then order create for Short
 
 iOrder = 0 # count fo order
 iTimesTS = 0 # count for move cost of take profit and stop loss
