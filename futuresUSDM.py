@@ -217,15 +217,19 @@ def mainLoop(pb00_, scrMain_, exept_):
                 print('ml Position Info -> Pnl: ' + str(got_positions[0]['unrealisedPnl']))
                 Pnl_ = 0.0
                 if got_positions[0]['unrealisedPnl'] != '':
+                    print('$$$$$$$$$$$$$$$$$$$$$$$$$ Position Info -> Pnl_: ' + str(Pnl_))
                     Pnl_ += round(float(got_positions[0]['unrealisedPnl']), 3)
+                    print('$$$$$$$$$$$$$$$$$$$$$$$$$ Position Info -> got_positions[0]: ' + str(got_positions[0]['unrealisedPnl']) + '; Pnl_ += : ' + str(Pnl_))
                 print('ml  !!!!!?????? mlastPrice: ' + str(mlastPrice) + '; cnfg.costsLn: ' + str(cnfg.costsLn) + '; cnfg.costsSh: ' + str(cnfg.costsSh))
                 diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems-1]) / cnfg.costsLn[cnfg.loopItems-1] * 100, 2) # difference of first IN and Current cost for Long
                 diffPercDn = round((cnfg.costsSh[cnfg.loopItems-1] - mlastPrice) / mlastPrice * 100, 4)# difference of first IN and Current cost for Short
+                #ordersInfo2 = ordersInfo["result"]["list"]
                 if cnfg.isUp: # if Long
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems-1] # in %
-                    print('ml diff Long -> ' + ' Original price: ' + str(cnfg.costsLn[cnfg.loopItems-1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.costsLn[cnfg.loopItems],2)) +'$'+ ' Diff: ' + str(diffPercLn) +'%' )
-                    print('ml Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) +'%')
-                    print('ml Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) +'%')
+                    print('isUp diff Long -> ' + ' Original price: ' + str(cnfg.costsLn[cnfg.loopItems-1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.costsLn[cnfg.loopItems],2)) +'$'+ ' Diff: ' + str(diffPercLn) +'%' )
+                    print('isUp Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) +'%')
+                    print('isUp Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) +'%')
+                    print('isUp -> get_execution Buy Order: ' + str(cnfg.session.get_executions(category="linear", orderId = cnfg.orderID_buy, limit=1,)))
                     if (diffPercLn >= tpLongFirst/2) and (diffPercLn > 0): # if a half of TP more then difference of first IN and Current cost
                         #print('ml edit Order -> ')
                         lnNextPrice = round(mlastPrice * (1 + tpLongFirst/2/100),2)
@@ -241,6 +245,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                 if cnfg.isDown:
                     tpShortFirst = cnfg.shTPfirstDn[cnfg.loopItems - 1] # in %
                     print('ml diff Short ->' + ' Original price: ' + str(cnfg.costsSh[cnfg.loopItems-1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(cnfg.costsSh[cnfg.loopItems-1] - mlastPrice,2)) +'$'+ ' Diff: ' + str(diffPercDn) + '%')
+                    print('isUp -> get_execution Sell Order: ' + str(cnfg.session.get_executions(category="linear", orderId = cnfg.orderID_sell, limit=1,)))
                     if (diffPercDn >= tpShortFirst/2) and (diffPercDn > 0):
                         #print('ml edit Order -> ')
                         shNextPrice = round(mlastPrice * (1 + tpShortFirst/2/100),2)
