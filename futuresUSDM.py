@@ -91,7 +91,7 @@ def initCurrent(): #init with second trade and more
     print('initCurrent()  wallet_balance_total1: ' + str(walletBalTotal1) + '; wallet_balance_total: ' + str(walletBalTotal))
 
     #------ Init for Short
-    ratioShCrr = cnfg.ratioSh * cnfg.loopItems #initial rate multiply on currnt step
+    ratioShCrr = cnfg.ratioSh * cnfg.loopItems + 1 #initial rate multiply on currnt step
     # if cnfg.CTrades[1] != cnfg.loopItems: #exclude division by zero
     #     ratioShCrr = float(round(1/int(cnfg.CTrades[1]-cnfg.loopItems),2)) #Ratio for current
     walletBalTotal = round(walletBalTotal * ratioShCrr,2)
@@ -106,7 +106,7 @@ def initCurrent(): #init with second trade and more
     cnfg.costSL_Short[cnfg.loopItems] = round(currGb_ * (1 + float(cnfg.shSLfirst[cnfg.loopItems]) / 100), cnfg.pricePrc)  # calculate SL
 
     #------ Init for Long
-    ratioLngCrr = cnfg.ratioLn * cnfg.loopItems #initial rate multiply on currnt step
+    ratioLngCrr = cnfg.ratioLn * cnfg.loopItems + 1 #initial rate multiply on currnt step
     # if cnfg.CTrades[0] != cnfg.loopItems: #exclude division by zero
     #     ratioLngCrr = float(round(1/int(cnfg.CTrades[0]-cnfg.loopItems),2)) #Ratio for current
     walletBalTotal = round(walletBalTotal * ratioLngCrr,2)
