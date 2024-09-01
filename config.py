@@ -88,6 +88,7 @@ orderID_sell, orderID_buyTP, orderID_buySL = 'null', 'null', 'null' # id order f
 retMsg_sell, retMsg_buy = '','' #get status orders
 #orderSStatus, orderBStatus = False, False
 isUp, isDown = True, True
+evExeption = False
 
 #orderCostLn = 0.0 # Current cost then order create for Long
 #orderCostDn = 0.0 # Current cost then order create for Short

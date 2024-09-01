@@ -141,7 +141,7 @@ class OOP:
         self.cmbFtrUpTP_Sh1.current(3)
         self.cmbFtrUpTP_Sh1.grid(column=9, row=0)
         self.cmbFtrUpSl_Sh1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) for Short 1
-        self.cmbFtrUpSl_Sh1.current(3)
+        self.cmbFtrUpSl_Sh1.current(2)
         self.cmbFtrUpSl_Sh1.grid(column=10, row=0)
 
         # self.lblFtrP1_05 = ttk.Label(self.panel1, text='1trd - TP/SL(%):')
@@ -168,17 +168,17 @@ class OOP:
         self.cmbFtrDnTP_Lng1.current(3)
         self.cmbFtrDnTP_Lng1.grid(column=9, row=1)
         self.cmbFtrDnSl_Lng1 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) Down for Long 1
-        self.cmbFtrDnSl_Lng1.current(3)
+        self.cmbFtrDnSl_Lng1.current(2)
         self.cmbFtrDnSl_Lng1.grid(column=10, row=1)
 
 # 2------- for UP
         self.lblFtr05 = ttk.Label(self.panel1, text='2trd - TP/SL(%):')
         self.lblFtr05.grid(column=11, row=0, padx=3)
         self.cmbFtrUpTP_Sh2 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set profit (%) for Short 2
-        self.cmbFtrUpTP_Sh2.current(9)
+        self.cmbFtrUpTP_Sh2.current(3)
         self.cmbFtrUpTP_Sh2.grid(column=12, row=0)
         self.cmbFtrUpSl_Sh2 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) for Short 2
-        self.cmbFtrUpSl_Sh2.current(5)
+        self.cmbFtrUpSl_Sh2.current(2)
         #self.cmbFtr11.bind("<<ComboboxSelected>>", self.getTP_SL_percent)
         self.cmbFtrUpSl_Sh2.grid(column=13, row=0,  sticky='E')
 
@@ -206,20 +206,20 @@ class OOP:
         self.lblFtrP1_077 = ttk.Label(self.panel1, text='2trd - TP/SL(%):')
         self.lblFtrP1_077.grid(column=11, row=1, padx=3)
         self.cmbFtrDnTP_Lng2 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set profit (%) Down for Long 2
-        self.cmbFtrDnTP_Lng2.current(9)
+        self.cmbFtrDnTP_Lng2.current(3)
         self.cmbFtrDnTP_Lng2.grid(column=12, row=1)
         self.cmbFtrDnSl_Lng2 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set stop loss (%) Down for Long 2
-        self.cmbFtrDnSl_Lng2.current(5)
+        self.cmbFtrDnSl_Lng2.current(2)
         self.cmbFtrDnSl_Lng2.grid(column=13, row=1)
 
 # 3------- for UP
         self.lblFtr11 = ttk.Label(self.panel1, text='3trd - TP/SL(%):')
         self.lblFtr11.grid(column=14, row=0, padx=3)
         self.cmbFtrUpTP_Sh3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4) # Set profit (%) for Short 3
-        self.cmbFtrUpTP_Sh3.current(9)
+        self.cmbFtrUpTP_Sh3.current(3)
         self.cmbFtrUpTP_Sh3.grid(column=15, row=0)
         self.cmbFtrUpSl_Sh3 = ttk.Combobox(self.panel1, values=cnfg.firstIn, width=4)  # Set stop loss (%) for Short 3
-        self.cmbFtrUpSl_Sh3.current(7)
+        self.cmbFtrUpSl_Sh3.current(2)
         self.cmbFtrUpSl_Sh3.grid(column=16, row=0,  sticky='E')
 
         # self.lblFtrP1_07 = ttk.Label(self.panel1, text='3trd - TP/SL(%):')
