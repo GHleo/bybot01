@@ -215,6 +215,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                     Pnl_ += round(float(got_list[0]['unrealisedPnl']), 3)
                     # print('$$$$$$$$$$$$$$$$$$$$$$$$$ Position Info -> got_positions[0]: ' + str(got_positions[0]['unrealisedPnl']) + '; Pnl_ += : ' + str(Pnl_))
                 if cnfg.isUp:  # if Long
+                    diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems - 1]) / cnfg.costsLn[cnfg.loopItems - 1] * 100,2)  # difference of first IN and Current cost for Long
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems - 1]  # in %
                     getExecOrder = cnfg.session.get_executions(category="linear", orderId=cnfg.orderID_buy, limit=1, )
                     getExecOrderList = getExecOrder["result"]["list"]
@@ -222,7 +223,6 @@ def mainLoop(pb00_, scrMain_, exept_):
                     print('isUp Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) + '%')
                     print('isUp Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) + '%')
                     print('isUp -> get_execution Buy Order Opened - execFee: ' + str(getExecOrderList[0]['execFee']))
-                    diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems - 1]) / cnfg.costsLn[cnfg.loopItems - 1] * 100,2)  # difference of first IN and Current cost for Long
                     if (diffPercLn >= tpLongFirst / 2) and (diffPercLn > 0):  # if a half of TP more then difference of first IN and Current cost
                         # print('ml edit Order -> ')
                         lnNextPrice = round(mlastPrice * (1 + tpLongFirst / 2 / 100), 2)
