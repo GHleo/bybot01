@@ -101,7 +101,7 @@ class OOP:
         label00 = ttk.Label(self.panel1, text="Quote:")
         label00.grid(column=0, row=1, sticky='E')
         self.cmbFtrP1_01 = ttk.Combobox(self.panel1, values=cnfg.quote, width=6)
-        self.cmbFtrP1_01.current(0)
+        self.cmbFtrP1_01.current(1)
         self.cmbFtrP1_01.grid(column=1, padx=6,row=1)
         #self.cmbFtrP1_01.bind("<<ComboboxSelected>>", self.getQuote)
 
