@@ -89,6 +89,7 @@ retMsg_sell, retMsg_buy = '','' #get status orders
 #orderSStatus, orderBStatus = False, False
 isUp, isDown = True, True
 evExeption = False
+trailStopLng, trailStopLng = False, False
 
 #orderCostLn = 0.0 # Current cost then order create for Long
 #orderCostDn = 0.0 # Current cost then order create for Short
