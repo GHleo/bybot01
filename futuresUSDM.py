@@ -179,16 +179,16 @@ def mainLoop(pb00_, scrMain_, exept_):
             print('Total PnL: ' + str(cnfg.pnlTotal))
             ordersInfo2 = ordersInfo["result"]["list"]
             ordInfoLen = len(ordersInfo2)
-            if firstSellOrderID or firstBuyOrderID:
+            if firstSellOrderID or firstBuyOrderID and not cnfg.firstOrderEnd:
                 firstSellOrderID = searchOrder(ordersInfo2, ordInfoLen, firstSellOrderID)
                 firstBuyOrderID = searchOrder(ordersInfo2, ordInfoLen, firstBuyOrderID)
                 print('ml SEARCH firstBuyOrderID: ' + str(firstBuyOrderID) + '; firstSellOrderID: ' + str(firstSellOrderID))
-                #firstSellOrderIDID, firstBuyOrderIDID = '',''
 
             print('ml firstBuyOrderID: ' + str(firstBuyOrderID) + '; firstSellOrderID: ' + str(firstSellOrderID))
 
             # If order was triggered - Deleting other order
             ###############################################
+            print('ml ???????????firstSellOrderID: ' + str(firstSellOrderID))
             if not firstSellOrderID and cnfg.retMsg_sell and cnfg.isDown:  # if sell(short) delete Buy order
                 #time.sleep(55)
                 #print('!!!!!!!!!firstSellOrderID: ' + str(cnfg.orderID_buy) + '; cnfg.retMsg_sell: ' + str(cnfg.retMsg_sell))
@@ -198,8 +198,10 @@ def mainLoop(pb00_, scrMain_, exept_):
                 cnfg.log.info("delBuyOrder; responce: {dl};".format(dl=delBuyOrder))
                 cnfg.trades = cnfg.CTrades[1]
                 cnfg.isUp = False
-                firstSellOrderID, firstBuyOrderID = '', ''
+                firstSellOrderID, firstBuyOrderID = 'done', 'done'
+                cnfg.firstOrderEnd = True
                 #print('ml !!!!!!!!ordersInfo: ' + str(ordersInfo))
+            print('ml ???????????firstBuyOrderID: ' + str(firstBuyOrderID))
             if not firstBuyOrderID and cnfg.retMsg_buy and cnfg.isUp:  # if buy(long) delete Sell order
                 #time.sleep(55)
                 print('!!!!!!!!!firstBuyOrderID: ' + str(firstBuyOrderID) + '; cnfg.retMsg_buy: ' + str(cnfg.retMsg_buy))
@@ -209,7 +211,8 @@ def mainLoop(pb00_, scrMain_, exept_):
                 cnfg.log.info("delSellOrder; responce: {dl};".format(dl=delSellOrder))
                 cnfg.trades = cnfg.CTrades[0]
                 cnfg.isDown = False
-                firstSellOrderID, firstBuyOrderID = '', ''
+                firstSellOrderID, firstBuyOrderID = 'done', 'done'
+                cnfg.firstOrderEnd = True
                 print('ml !!!!!!!!!ordersInfo: ' + str(ordersInfo))
 
             # if enter to position
