@@ -157,8 +157,9 @@ def calculateBalance():
 @thread
 def mainLoop(pb00_, scrMain_, exept_):
     global Pnl_, lmt_
-    Pnl_ = 0.00
+    Pnl_ = 0.0
     lmt_ = 4
+    ordersListCnt = 0
     execFeeBuy, execFeeSell = 0.0, 0.0
     #cnfg.orderID_sell, firstBuyOrder = '', ''
     cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsSh[0], cnfg.costTP_Short[0],cnfg.costSL_Short[0], cnfg.positShUp[0], exept_, 'LIMIT', 0)
@@ -176,23 +177,23 @@ def mainLoop(pb00_, scrMain_, exept_):
 
             scrMain_.insert(tk.END, '\nPrice: ' + str(mlastPrice) + '; position Qty: ' + str(posQty) + '; PnL: ' + str(round(Pnl_ + cnfg.pnlTotal - float(execFeeBuy),3))  + '; Current loop: ' + str(cnfg.loopItems) + '; ' + str(dt.now().strftime('%H:%M:%S')))
             ordersInfo = cnfg.session.get_open_orders(category="linear", symbol=cnfg.pair, openOnly=0, limit=lmt_)
-            print('ml ordersInfo: ' + str(ordersInfo))
-            ordersInfo2 = ordersInfo["result"]["list"]
-            ordersInfo3 = ordersInfo[0]["nextPageCursor"]
-            print('ml ordersInfo3: ' + str(ordersInfo3))
-            if ordersInfo3:
-                orderType1 = ordersInfo2[0]['stopOrderType']
-                orderType11 = ordersInfo2[0]['orderId']
-                orderType2 = ordersInfo2[1]['stopOrderType']
-                orderType22 = ordersInfo2[1]['orderId']
+            #print('ml ordersInfo: ' + str(ordersInfo))
+            ordersList = ordersInfo["result"]["list"]
+            print('ml ordersList: ' + str(ordersList))
+            # ordersInfo3 = ordersList["nextPageCursor"]
+            # print('ml ordersInfo3: ' + str(ordersInfo3))
+            if ordersList: #if there is open orders
+                orderType1 = ordersList[0]['stopOrderType']
+                orderType11 = ordersList[0]['orderId']
+                orderType2 = ordersList[1]['stopOrderType']
+                orderType22 = ordersList[1]['orderId']
                 print('ml orderId1: ' + str(orderType11) + '; orderType1: ' + str(orderType1) + '\nml orderId2: ' + str(orderType22) + '; orderType2: ' + str(orderType2))
-            ordInfoLen = len(ordersInfo2)
+            ordInfoLen = len(ordersList)
             print('ml positionsInfo List: ' + str(got_list))
-            print('ml ordersInfo List: ' + str(ordersInfo2))
             print('Total PnL: ' + str(cnfg.pnlTotal))
             if cnfg.orderID_sell or cnfg.orderID_buy and not cnfg.firstOrderEnd:
-                cnfg.orderID_sell = searchOrder(ordersInfo2, ordInfoLen, cnfg.orderID_sell)
-                cnfg.orderID_buy = searchOrder(ordersInfo2, ordInfoLen, cnfg.orderID_buy)
+                cnfg.orderID_sell = searchOrder(ordersList, ordInfoLen, cnfg.orderID_sell)
+                cnfg.orderID_buy = searchOrder(ordersList, ordInfoLen, cnfg.orderID_buy)
                 print('ml SEARCH cnfg.orderID_buy: ' + str(cnfg.orderID_buy) + '; cnfg.orderID_sell: ' + str(cnfg.orderID_sell))
 
             #print('ml cnfg.orderID_buy: ' + str(cnfg.orderID_buy) + '; cnfg.orderID_sell: ' + str(cnfg.orderID_sell))
@@ -226,9 +227,8 @@ def mainLoop(pb00_, scrMain_, exept_):
             ######################
             if (positionValue != '0') and (positionValue != ''):
                 print('ml Position Info -> Pnl: ' + str(got_list[0]['unrealisedPnl']))
-                Pnl_ = 0.0
                 if got_list[0]['unrealisedPnl'] != '':
-                    Pnl_ += round(float(got_list[0]['unrealisedPnl']), 3)
+                    Pnl_ = round(float(got_list[0]['unrealisedPnl']), 3)
                 if cnfg.isUp:  # if Long
                     diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems - 1]) / cnfg.costsLn[cnfg.loopItems - 1] * 100,2)  # difference of first IN and Current cost for Long
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems - 1]  # in %
@@ -307,8 +307,11 @@ def mainLoop(pb00_, scrMain_, exept_):
             #got_list = getPosInfolist()
             #positionValue = got_list[0]['positionValue']
             #print('positionValue ', positionValue)
-            # if positionValue == '' and not cnfg.evExeption and cnfg.loopItems == cnfg.trades:
-            #     cnfg.trades = 0ml ordersInfo:
+
+            if positionValue == '' and not cnfg.evExeption and not ordersList:
+                ordersListCnt += 1
+                if ordersListCnt > 3: # if 3 min there not orders end of loop
+                    cnfg.trades = 0
 
             thread = threading.Thread(target=run_progressbar(pb00_, cnfg.chVarDelay_GL))
             thread.start()
