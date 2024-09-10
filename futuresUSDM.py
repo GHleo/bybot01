@@ -453,8 +453,10 @@ def editOrder(tp_, sl_, qty_, exept_, posIdx_):
             symbol=str(cnfg.pair),
             takeProfit=str(tp_),
             stopLoss=str(sl_),
-            tpSize=qty_,
-            slSize=qty_,
+            # tpSize=qty_,
+            # slSize=qty_,
+            tpTriggerBy="MarkPrice",
+            slTriggerB="MarkPrice",
             positionIdx=posIdx_,  # hedge-mode if 2 - sell, if 1 - Buy side, 0: one-way mode
         )
         cnfg.log.info("edit Order() LIMIT; responce: {tp}; {sl}".format(tp=tp_, sl=sl_))
@@ -487,7 +489,7 @@ def editOrde2(tp_, sl_, exept_, posIdx_):
 
 
 def delAllOrders(except_):
-    # print('delOrder() ---- ' +str(dt.now().strftime('%H:%M:%S')))
+    # print('delOrder() ---- ' +str(dt.now().strftime('%H:%M:%S'))) #
     if cnfg.pair:
         # deleteOrders = cnf.client.futures_cancel_all_open_orders(symbol=cnf.pair, timestamp=dt.now())  # Delete all open orders
         deleteOrders = cnfg.session.cancel_all_orders(category="linear", settleCoin="USDT", )
