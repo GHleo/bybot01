@@ -46,16 +46,16 @@ def fhUSDM_initUP(lblPriceInUP_):  # SHORT
     print('\nfhUSDM_initUP() Short ratioSh: ' + str(cnfg.ratioSh) + '; cnfg.loopItems: ' + str(cnfg.loopItems))
     cnfg.balanceShOnLev = cnfg.balanceShOnLev * cnfg.ratioSh
     print('fhUSDM_initUP() Short cnfg.balanceShOnLev] * ratio  = ' + str(cnfg.balanceShOnLev))
-    # cnfg.positShUp[0] = truncate(cnfg.balanceShOnLev / cnfg.costsSh[0], qtyStep) #calculate count in first position
-    cnfg.positShUp[0] = round_up(cnfg.balanceShOnLev / cnfg.costsSh[0], qtyStep)  # calculate count in first position
+    # cnfg.positSh[0] = truncate(cnfg.balanceShOnLev / cnfg.costsSh[0], qtyStep) #calculate count in first position
+    cnfg.positSh[0] = round_up(cnfg.balanceShOnLev / cnfg.costsSh[0], qtyStep)  # calculate count in first position
 
-    # cnfg.balanceShRatU[0] = round(cnfg.positShUp[0] * cnfg.costsSh[0], 2)  # REWRITE balance after truncate quontity !!!!!!
-    print('fhUSDM_initUP()  Qty(short)  cnfg.positShUp[0]  = ' + str(cnfg.positShUp[0]))
+    # cnfg.balanceShRatU[0] = round(cnfg.positSh[0] * cnfg.costsSh[0], 2)  # REWRITE balance after truncate quontity !!!!!!
+    print('fhUSDM_initUP()  Qty(short)  cnfg.positSh[0]  = ' + str(cnfg.positSh[0]))
     cnfg.costTP_Short[0] = round(cnfg.costsSh[0] * (1 - float(cnfg.shTPfirst[0]) / 100), cnfg.pricePrc)  # cost first TP
     cnfg.costSL_Short[0] = round(cnfg.costsSh[0] * (1 + float(cnfg.shSLfirst[0]) / 100), cnfg.pricePrc)  # cost first SL
     # fee1 = round(cnfg.balanceShRatU[0] * float(feeMarket),4) # fee on market trade, buy and sell
-    # cnfg.profitsShU[0]=round(cnfg.balanceShRatU[0] - cnfg.positShUp[0] * cnfg.costTP_Short[0], 2) #first profit
-    # cnfg.lossesShU[0]=round(cnfg.positShUp[0] * cnfg.costSL_Short[0] - cnfg.balanceShRatU[0], 2) #first loss
+    # cnfg.profitsShU[0]=round(cnfg.balanceShRatU[0] - cnfg.positSh[0] * cnfg.costTP_Short[0], 2) #first profit
+    # cnfg.lossesShU[0]=round(cnfg.positSh[0] * cnfg.costSL_Short[0] - cnfg.balanceShRatU[0], 2) #first loss
 
 
 def fhUSDM_initDOWN(lblPriceInDn_):
@@ -74,15 +74,15 @@ def fhUSDM_initDOWN(lblPriceInDn_):
     print('\nfhUSDM_initDOWN Long ratioLng: ' + str(cnfg.ratioLn) + '; cnfg.loopItems: ' + str(cnfg.loopItems) + '; cnfg.balanceLnOnLev: ' + str(cnfg.balanceLnOnLev))
     cnfg.balanceLnOnLev = round(cnfg.balanceLnOnLev * cnfg.ratioLn, 2)
     print('fhUSDM_initDOWN() Long cnfg.balanceLnOnLev = ' + str(cnfg.balanceLnOnLev))
-    # cnfg.positLngDn[0] = truncate(cnfg.balanceLnOnLev / cnfg.costsLn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
-    cnfg.positLngDn[0] = round_up(cnfg.balanceLnOnLev / cnfg.costsLn[0],qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
-    print('fhUSDM_initDOWN() Qty(long) cnfg.balanceLnOnLev / cnfg.costsLn[0]: ' + str(cnfg.balanceLnOnLev / cnfg.costsLn[0]) + '; cnfg.positLngDn[0] = ' + str(cnfg.positLngDn[0]))
-    cnfg.balanceLngRatDn[0] = round(cnfg.positLngDn[0] * cnfg.costsLn[0],2)  # REWRITE balance after truncate quontity !!!!!!
+    # cnfg.positLng[0] = truncate(cnfg.balanceLnOnLev / cnfg.costsLn[0], qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
+    cnfg.positLng[0] = round_up(cnfg.balanceLnOnLev / cnfg.costsLn[0],qtyStep)  # calculate count in first position - truncate quantity because of restrictions at futures rules
+    print('fhUSDM_initDOWN() Qty(long) cnfg.balanceLnOnLev / cnfg.costsLn[0]: ' + str(cnfg.balanceLnOnLev / cnfg.costsLn[0]) + '; cnfg.positLng[0] = ' + str(cnfg.positLng[0]))
+    cnfg.balanceLngRatDn[0] = round(cnfg.positLng[0] * cnfg.costsLn[0],2)  # REWRITE balance after truncate quontity !!!!!!
     cnfg.costTP_Long[0] = round(cnfg.costsLn[0] * (1 + float(cnfg.lngTPfirstDn[0]) / 100),cnfg.pricePrc)  # cost first TP
     cnfg.costSL_Long[0] = round(cnfg.costsLn[0] * (1 - float(cnfg.lngSLfirstDn[0]) / 100),cnfg.pricePrc)  # cost first SL !!!!!!!!!!!! TRIGER IN OCO !!!!!!
     fee11 = round(cnfg.balanceLngRatDn[0] * float(feeMarket) * float(feeMarket), 4)  # fee on market trade, buy and sell
-    cnfg.profitsLngDn[0] = round(cnfg.positLngDn[0] * cnfg.costTP_Long[0] - cnfg.balanceLngRatDn[0], 2)  # first profit
-    cnfg.lossesLngDn[0] = round(cnfg.balanceLngRatDn[0] - cnfg.positLngDn[0] * cnfg.costSL_Long[0], 2)  # first loss
+    cnfg.profitsLngDn[0] = round(cnfg.positLng[0] * cnfg.costTP_Long[0] - cnfg.balanceLngRatDn[0], 2)  # first profit
+    cnfg.lossesLngDn[0] = round(cnfg.balanceLngRatDn[0] - cnfg.positLng[0] * cnfg.costSL_Long[0], 2)  # first loss
 
 
 def initCurrent():  # init with second trade and more
@@ -160,10 +160,11 @@ def mainLoop(pb00_, scrMain_, exept_):
     Pnl_ = 0.0
     lmt_ = 4
     ordersListCnt = 0
+    orderId1 = ''
     execFeeBuy, execFeeSell = 0.0, 0.0
     #cnfg.orderID_sell, firstBuyOrder = '', ''
-    cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsSh[0], cnfg.costTP_Short[0],cnfg.costSL_Short[0], cnfg.positShUp[0], exept_, 'LIMIT', 0)
-    cnfg.orderID_buy, cnfg.retMsg_buy = createOrder('Buy', cnfg.levDn, cnfg.costsLn[0], cnfg.costTP_Long[0],cnfg.costSL_Long[0], cnfg.positLngDn[0], exept_, 'LIMIT', 0)
+    cnfg.orderID_sell, cnfg.retMsg_sell = createOrder('Sell', cnfg.levUP, cnfg.costsSh[0], cnfg.costTP_Short[0],cnfg.costSL_Short[0], cnfg.positSh[0], exept_, 'LIMIT', 0)
+    cnfg.orderID_buy, cnfg.retMsg_buy = createOrder('Buy', cnfg.levDn, cnfg.costsLn[0], cnfg.costTP_Long[0],cnfg.costSL_Long[0], cnfg.positLng[0], exept_, 'LIMIT', 0)
     print('ml cnfg.orderID_sell: ' + str(cnfg.orderID_sell) + '; cnfg.orderID_buy: ' + str(cnfg.orderID_buy))
     cnfg.loopItems += 1
     scrMain_.insert(tk.END, '\ncnfg.orderID_sell: ' + str(cnfg.orderID_sell) + '; cnfg.orderID_buy: ' + str(cnfg.orderID_buy))
@@ -184,10 +185,10 @@ def mainLoop(pb00_, scrMain_, exept_):
             # print('ml ordersInfo3: ' + str(ordersInfo3))
             if ordersList: #if there is open orders
                 orderType1 = ordersList[0]['stopOrderType']
-                orderType11 = ordersList[0]['orderId']
+                orderId1 = ordersList[0]['orderId']
                 orderType2 = ordersList[1]['stopOrderType']
                 orderType22 = ordersList[1]['orderId']
-                print('ml orderId1: ' + str(orderType11) + '; orderType1: ' + str(orderType1) + '\nml orderId2: ' + str(orderType22) + '; orderType2: ' + str(orderType2))
+                print('ml orderId1: ' + str(orderId1) + '; orderType1: ' + str(orderType1) + '\nml orderId2: ' + str(orderType22) + '; orderType2: ' + str(orderType2))
             ordInfoLen = len(ordersList)
             print('ml positionsInfo List: ' + str(got_list))
             print('Total PnL: ' + str(cnfg.pnlTotal))
@@ -240,7 +241,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                     #print('isUp Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) + '%')
                     print('isUp -> get_execution Buy Order Opened - execFee: ' + str(execFeeBuy))
                     print('isUp -> diffPercLn: ' + str(diffPercLn) + '; tpLongFirst: ' + str(tpLongFirst) + '; tpLongFirst: ' + str(tpLongFirst))
-                    if (diffPercLn >= tpLongFirst / 2) and (diffPercLn > 0): # and not cnfg.trailStopLng:  # if a half of TP more then difference of first IN and Current cost
+                    if (diffPercLn >= tpLongFirst / 2) and (diffPercLn > 0) and not cnfg.trailStopLng:  # if a half of TP more then difference of first IN and Current cost
                         print('ml edit Order -> ')
                         lnNextPrice = round(mlastPrice * (1 + tpLongFirst / 2 / 100), 2)
                         slLongFirst = cnfg.lngSLfirstDn[cnfg.loopItems - 1]  # in %
@@ -249,9 +250,13 @@ def mainLoop(pb00_, scrMain_, exept_):
                         lnNextSL = round(cnfg.costSL_Long[cnfg.loopItems - 1] * (1 + (slLongFirst / 2 / 100)),cnfg.pricePrc)
                         print('isUp edit Long -> cnfg.lngTPfirstDn: ' + str(cnfg.lngTPfirstDn) + '; tpLongFirst/2: ' + str(tpLongFirst / 2) + '; cnfg.costTP_Long: ' + str( cnfg.costTP_Long) + '; lnNextTP: ' + str(lnNextTP))
                         print('isUp edit Long -> cnfg.lngSLfirstDn: ' + str(cnfg.lngSLfirstDn) + '; slLongFirst/2: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems - 1] / 2) + '; cnfg.costSL_Long: ' + str(cnfg.costSL_Long) + '; lnNextSL: ' + str(lnNextSL))
-                        # response = editOrder(lnNextTP,lnNextSL, exept_,0)
-                        # cnfg.trailStopLng = True
-                        # print('isUp EDIT Long -> response: ' + str(response))
+                        print('isUp edit Long -> cnfg.positLng: ' + str(cnfg.positLng) + '; cnfg.loopItems: ' + str(cnfg.loopItems))
+                        response = editOrder(lnNextTP,lnNextSL, cnfg.positLng[cnfg.loopItems - 1], exept_,0)
+                        if response:
+                            #delOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=orderId1)
+                            print('isUp EDIT Long -> delOrder: ' + str(response))
+                            cnfg.trailStopLng = True
+                        print('isUp EDIT Long -> response: ' + str(response))
 
                         # cnfg.iTimesTS += 1
                 if cnfg.isDown:
@@ -440,7 +445,30 @@ def round_up(n, decimals=0):
     return math.ceil(n * multiplier) / multiplier
 
 
-def editOrder(tp_, sl_, exept_, posIdx_):
+def editOrder(tp_, sl_, qty_, exept_, posIdx_):
+    try:
+        print('edit Order(): ' + '; tp_: ' + str(tp_) + '; sl_: ' + str(sl_) + '; ' + '; qty_: ' + str(qty_) + str(dt.now().strftime('%H:%M:%S')))
+        responce = cnfg.session.set_trading_stop(
+            category="linear",
+            symbol=str(cnfg.pair),
+            takeProfit=str(tp_),
+            stopLoss=str(sl_),
+            tpSize=qty_,
+            slSize=qty_,
+            tpTriggerBy="MarkPrice",
+            slTriggerB="MarkPrice",
+            positionIdx=posIdx_,  # hedge-mode if 2 - sell, if 1 - Buy side, 0: one-way mode
+        )
+        cnfg.log.info("edit Order() LIMIT; responce: {tp}; {sl}".format(tp=tp_, sl=sl_))
+        return responce
+
+    except Exception as e:
+        exept_.set(str(dt.now().strftime('%H:%M:%S')) + '; editOrder() Exception! -> ' + str(e))
+        cnfg.log.info("\neditOrder(Exception)-> {ex}".format(ex=e))
+        print("editOrder() Exception! {}".format(e))
+
+
+def editOrde2(tp_, sl_, exept_, posIdx_):
     try:
         print('edit Order(): ' + '; tp_: ' + str(tp_) + '; sl_: ' + str(sl_) + '; ' + str(dt.now().strftime('%H:%M:%S')))
         responce = cnfg.session.set_trading_stop(
