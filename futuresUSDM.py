@@ -447,7 +447,7 @@ def round_up(n, decimals=0):
 
 def editOrder(tp_, sl_, qty_, exept_, posIdx_):
     try:
-        print('edit Order(): ' + '; tp_: ' + str(tp_) + '; sl_: ' + str(sl_) + '; ' + '; qty_: ' + str(qty_) + str(dt.now().strftime('%H:%M:%S')))
+        print('edit Order(): ' + 'tp_: ' + str(tp_) + '; sl_: ' + str(sl_) + '; ' + '; qty_: ' + str(qty_) +'; date: ' + str(dt.now().strftime('%H:%M:%S')))
         responce = cnfg.session.set_trading_stop(
             category="linear",
             symbol=str(cnfg.pair),
@@ -455,8 +455,6 @@ def editOrder(tp_, sl_, qty_, exept_, posIdx_):
             stopLoss=str(sl_),
             tpSize=qty_,
             slSize=qty_,
-            tpTriggerBy="MarkPrice",
-            slTriggerB="MarkPrice",
             positionIdx=posIdx_,  # hedge-mode if 2 - sell, if 1 - Buy side, 0: one-way mode
         )
         cnfg.log.info("edit Order() LIMIT; responce: {tp}; {sl}".format(tp=tp_, sl=sl_))
