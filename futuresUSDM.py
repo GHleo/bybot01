@@ -464,6 +464,7 @@ def editOrder(tp_, sl_, qty_, exept_, posIdx_):
             takeProfit=str(tp_),
             #tpSize=qty_,
             tpslMode="Full",
+            tpOrderType="Market"
             #stopLoss=str(sl_),
             # tpSize=qty_,
             # slSize=qty_,
