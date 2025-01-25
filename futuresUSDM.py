@@ -149,7 +149,9 @@ def calculateBalance():
     get_wallet_balance = cnfg.session.get_wallet_balance(accountType="UNIFIED", coin="USDT")
     wallet_balance1 = get_wallet_balance['result']['list']
     wallet_balance2 = wallet_balance1[0]['coin']
-    wallet_balance_total = round(float(wallet_balance2[0]['availableToWithdraw']), 2)
+    #print('wallet_balance2 ' + str(wallet_balance2)) !!!!!!!!!!!!!!!!
+    wallet_balance_total = round(float(wallet_balance2[0]['walletBalance']), 2)
+
     #wallet_balance_total = round(wallet_balance_total1, 2)
     #print('calculateBalance() wallet_balance_total1(truncate) = ' + str(wallet_balance_total1) + '; Wallet_balance_total(round) = ' + str(wallet_balance_total1))
     return wallet_balance_total
@@ -174,7 +176,7 @@ def mainLoop(pb00_, scrMain_, exept_):
             got_list, positionValue = getPosInfolist()
             posQty = got_list[0]['size']
             print('ml got_positions[positionValue]: ' + str(positionValue) + '; posQty: ' + str(posQty))
-            #print('ml get_execution Buy Order Opened - execFeeBuy: ' + str(execFeeBuy))
+            #print('ml get_execution Buy Order Opened - execFeeBuy: ' + str(execFeeBuy)) 555
 
             scrMain_.insert(tk.END, '\nPrice: ' + str(mlastPrice) + '; position Qty: ' + str(posQty) + '; PnL: ' + str(round(Pnl_ + cnfg.pnlTotal - float(execFeeBuy),3))  + '; Current loop: ' + str(cnfg.loopItems) + '; ' + str(dt.now().strftime('%H:%M:%S')))
             ordersInfo = cnfg.session.get_open_orders(category="linear", symbol=cnfg.pair, openOnly=0, limit=lmt_)
