@@ -229,12 +229,14 @@ def mainLoop(pb00_, scrMain_, exept_):
             # if enter to position
             ######################
             if (positionValue != '0') and (positionValue != ''):
-                print('ml Position Info -> Pnl: ' + str(got_list[0]['unrealisedPnl']))
+                time.sleep(1)
+                print(str(dt.now().strftime('%H:%M:%S')) + '; if Position!!!! IPosition Info -> Pnl: ' + str(got_list[0]['unrealisedPnl']))
                 listID, listOT = getOrders(ordersList, ordInfoLen)
-                print('ml Position Orders: listID' + str(listID) + '; listOT: ' + str(listOT) + '; ordInfoLen: ' + str(ordInfoLen))
+                print('if Position!!!! Position Orders: listID' + str(listID) + '; listOT: ' + str(listOT) + '; ordInfoLen: ' + str(ordInfoLen))
                 if got_list[0]['unrealisedPnl'] != '':
                     Pnl_ = round(float(got_list[0]['unrealisedPnl']), 3)
                 if cnfg.isUp:  # if Long
+                    print('if Position!!!! isUp')
                     diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems - 1]) / cnfg.costsLn[cnfg.loopItems - 1] * 100,2)  # difference of first IN and Current cost for Long
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems - 1]  # in %
                     #getExecOrder = cnfg.session.get_executions(category="linear", orderId=cnfg.orderID_buy, limit=1, )
@@ -264,6 +266,7 @@ def mainLoop(pb00_, scrMain_, exept_):
 
                         # cnfg.iTimesTS += 1
                 if cnfg.isDown:
+                    print('if Position!!!! isDown')
                     tpShortFirst = cnfg.shTPfirstDn[cnfg.loopItems - 1]  # in %
                     diffPercDn = round((cnfg.costsSh[cnfg.loopItems - 1] - mlastPrice) / mlastPrice * 100, 4)  # difference of first IN and Current cost for Short
                     getExecOrderList = getExecutionOrd(cnfg.orderID_sell)
