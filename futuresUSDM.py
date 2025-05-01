@@ -149,8 +149,11 @@ def calculateBalance():
     get_wallet_balance = cnfg.session.get_wallet_balance(accountType="UNIFIED", coin="USDT")
     wallet_balance1 = get_wallet_balance['result']['list']
     wallet_balance2 = wallet_balance1[0]['coin']
-    #print('wallet_balance2 ' + str(wallet_balance2)) !!!!!!!!!!!!!!!!
-    wallet_balance_total = round(float(wallet_balance2[0]['walletBalance']), 2)
+    walletBalance = round(float(wallet_balance2[0]['walletBalance']), 2)
+    totalPositionIM = round(float(wallet_balance2[0]['totalPositionIM']), 2)
+    forwithdrawal = round(walletBalance - totalPositionIM, 2)
+    print('BBBBBBalance for withdrawal: ' + str(forwithdrawal))
+    wallet_balance_total = forwithdrawal #round(float(wallet_balance2[0]['walletBalance']), 2)
 
     #wallet_balance_total = round(wallet_balance_total1, 2)
     #print('calculateBalance() wallet_balance_total1(truncate) = ' + str(wallet_balance_total1) + '; Wallet_balance_total(round) = ' + str(wallet_balance_total1))
