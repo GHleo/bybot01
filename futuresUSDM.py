@@ -247,6 +247,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                     execFeeBuy = getExecOrderList[0]['execFee']
                     print('isUp diff Long -> ' + ' Original price: ' + str(cnfg.costsLn[cnfg.loopItems - 1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.costsLn[cnfg.loopItems], 2)) + '$' + ' Diff: ' + str(diffPercLn) + '%')
                     print('isUp Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) + '%')
+                    print('isUp Value     for TP Long = ' + str(cnfg.costTP_Long[cnfg.loopItems - 1]) + '; for SL Long =  ' + str(cnfg.costSL_Long[cnfg.loopItems - 1]))
                     #print('isUp Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) + '%')
                     #print('isUp -> get_execution Buy Order Opened - execFee: ' + str(execFeeBuy))
                     print('isUp -> diffPercLn: ' + str(diffPercLn) + '; tpLongFirst: ' + str(tpLongFirst) + '; tpLongFirst: ' + str(tpLongFirst))
@@ -265,6 +266,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                             #delOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=orderId1)
                             print('isUp EDIT Long -> delOrder: ' + str(response))
                             cnfg.trailStopLng = True
+
                         print('isUp EDIT Long -> response: ' + str(response))
 
                         # cnfg.iTimesTS += 1
@@ -356,6 +358,7 @@ def createOrder(side_, lev_, prc_, tp_, sl_, qty_, exept_, type_, posIdx_):
                 takeProfit=str(tp_),
                 stopLoss=str(sl_),
                 tpslMode='Partial',
+                #tpslMode='Partial',
                 positionIdx=posIdx_,  # hedge-mode if 2 - sell, if 1 - Buy side, 0: one-way mode
             )
             cnfg.log.info("create Order() LIMIT; responce: {side}; {price}".format(side=side_, price=prc_))
@@ -470,9 +473,12 @@ def editOrder(tp_, sl_, qty_, exept_, posIdx_):
             category="linear",
             symbol=str(cnfg.pair),
             takeProfit=str(tp_),
-            #tpSize=qty_,
-            tpslMode="Full",
-            tpOrderType="Market"
+            stopLoss=str(sl_),
+            tpSize=qty_,
+            slSize=qty_,
+            tpslMode="Partial",
+            tpOrderType="Limit",
+            positionIdx=0
             #stopLoss=str(sl_),
             # tpSize=qty_,
             # slSize=qty_,
@@ -507,7 +513,6 @@ def editOrde2(tp_, sl_, exept_, posIdx_):
         exept_.set(str(dt.now().strftime('%H:%M:%S')) + '; editOrder() Exception! -> ' + str(e))
         cnfg.log.info("\neditOrder(Exception)-> {ex}".format(ex=e))
         print("editOrder() Exception! {}".format(e))
-
 
 def delAllOrders(except_):
     # print('delOrder() ---- ' +str(dt.now().strftime('%H:%M:%S'))) #
