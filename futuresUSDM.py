@@ -240,7 +240,7 @@ def mainLoop(pb00_, scrMain_, exept_):
 
                 if got_list[0]['unrealisedPnl'] != '':
                     Pnl_ = round(float(got_list[0]['unrealisedPnl']), 3)
-                if cnfg.isUp:  # if Long
+                if cnfg.isUp:  # ID LONG
                     print('if Position!!!! isUp')
                     diffPercLn = round((mlastPrice - cnfg.costsLn[cnfg.loopItems - 1]) / cnfg.costsLn[cnfg.loopItems - 1] * 100,2)  # difference of first IN and Current cost for Long
                     tpLongFirst = cnfg.lngTPfirstDn[cnfg.loopItems - 1]  # in %
@@ -249,55 +249,84 @@ def mainLoop(pb00_, scrMain_, exept_):
                     execFeeBuy = getExecOrderList[0]['execFee']
                     #print('isUp diff Long -> ' + ' Original price: ' + str(cnfg.costsLn[cnfg.loopItems - 1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(mlastPrice - cnfg.costsLn[cnfg.loopItems], 2)) + '$' + ' Diff: ' + str(diffPercLn) + '%')
                     #print('isUp Value in% for TP Long (cnfg.lngTPfirstDn); Set: ' + str(tpLongFirst) + ' Now: ' + str(diffPercLn) + '%')
-                    loop = cnfg.loopItems - 1
+                    loop = cnfg.loopItems - 1 #??????
                     if cnfg.trailingCountLng >= 1:
                         loop = cnfg.loopItems
 
-                    print('isUp Value     for TP Long = ' + str(cnfg.costTP_Long[loop]) + '; for SL Long =  ' + str(cnfg.costSL_Long[loop]))
+                    print('isUp Value     for TP Long = ' + str(cnfg.costTP_Long[loop]) + '; for SL Long =  ' + str(cnfg.costSL_Long[loop]) + '; loop =  ' + str(loop))
                     #print('isUp Value in% for SL Long (cnfg.lngSLfirstDn); Set: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems]) + ' Now: ' + str(diffPercDn) + '%')
                     #print('isUp -> get_execution Buy Order Opened - execFee: ' + str(execFeeBuy))
-                    print('isUp -> diffPercLn: ' + str(diffPercLn) + '; tpLongFirst: ' + str(tpLongFirst) + '; tpLongFirst: ' + str(tpLongFirst))
-                    if (diffPercLn >= tpLongFirst / 2) and (diffPercLn > 0) and (cnfg.trailingCountLng < 2):  # if a half of TP more then difference of first IN and Current cost
+                    print('isUp -> diffPercLn: ' + str(diffPercLn) + '; tpLongFirst: ' + str(tpLongFirst))
+
+                    if (diffPercLn >= tpLongFirst / 2) and (diffPercLn > 0) and (cnfg.trailingCountLng <= 2):  # if a half of TP more then difference of first IN and Current cost
                         delSLTP = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=listID[0])
-                        print('if Position!!!! Position Delete order listID[0]:' + str(delSLTP))
+                        print('if Position LONG!!!! Position Delete order listID[0]:' + str(delSLTP))
                         if delSLTP['retMsg'] == 'OK':
-                            lnNextPrice = round(mlastPrice * (1 + tpLongFirst / 2 / 100), 2)
+                            lnNextPrice = round(mlastPrice * (1 + tpLongFirst / 2 / 100), 2) # For test ??????
                             slLongFirst = cnfg.lngSLfirstDn[cnfg.loopItems - 1]  # in %
                             print('isUp edit Long -> mlastPrice: ' + str(mlastPrice) + '; tpLongFirst/2: ' + str(tpLongFirst / 2) + '; lnNextPrice: ' + str(lnNextPrice))
                             lnNextTP = round(cnfg.costTP_Long[cnfg.loopItems - 1] * (1 + (tpLongFirst / 2 / 100)),cnfg.pricePrc)
                             lnNextSL = round(cnfg.costSL_Long[cnfg.loopItems - 1] * (1 + (slLongFirst / 2 / 100)),cnfg.pricePrc)
-                            #print('isUp edit Long -> cnfg.lngTPfirstDn: ' + str(cnfg.lngTPfirstDn) + '; tpLongFirst/2: ' + str(tpLongFirst / 2) + '; cnfg.costTP_Long: ' + str( cnfg.costTP_Long) + '; lnNextTP: ' + str(lnNextTP))
+                            print('isUp edit Long (First set) -> cnfg.lngTPfirstDn(%): ' + str(cnfg.lngTPfirstDn) + '; cnfg.costTP_Long($): ' + str( cnfg.costTP_Long) + '; lnNextTP($): ' + str(lnNextTP))
                             print('isUp edit Long -> cnfg.lngSLfirstDn: ' + str(cnfg.lngSLfirstDn) + '; slLongFirst/2: ' + str(cnfg.lngSLfirstDn[cnfg.loopItems - 1] / 2) + '; cnfg.costSL_Long: ' + str(cnfg.costSL_Long) + '; lnNextSL: ' + str(lnNextSL))
                             print('isUp edit Long -> cnfg.positLng: ' + str(cnfg.positLng) + '; cnfg.loopItems: ' + str(cnfg.loopItems) + '; cnfg.trailingCountLng: ' + str(cnfg.trailingCountLng))
                             response = set_trading_stop(lnNextTP,lnNextSL, cnfg.positLng[cnfg.loopItems - 1], exept_,0)
                             if response:
                                 cnfg.trailingCountLng += 1
-                                cnfg.costTP_Long[cnfg.loopItems - 1] = lnNextTP #rewrite TP
-                                cnfg.costSL_Long[cnfg.loopItems - 1] = lnNextSL #rewrite SL
+                                if cnfg.trailingCountLng >= 2:
+                                    lnNextTP2 = round(cnfg.costTP_Long[cnfg.loopItems - 1] * (1 + (tpLongFirst / 3 / 100)),cnfg.pricePrc) # on second step take profit increase on 1/3
+                                    cnfg.costTP_Long[cnfg.loopItems - 1] = round(lnNextTP2,cnfg.pricePrc) #rewrite TP
+                                    print('isUp edit SECOND item Long -> costTP_Long: ' + str(cnfg.costTP_Long[cnfg.loopItems - 1]) + '; lnNextTP2 (TP increase on 1/3): ' + str(lnNextTP2))
+                                else:
+                                    cnfg.costTP_Long[cnfg.loopItems - 1] = lnNextTP #rewrite TP
+                                    cnfg.costSL_Long[cnfg.loopItems - 1] = lnNextSL #rewrite SL
+                                    print('isUp EDIT SL & TP!!!!!!!!!!!!!!')
                                 #delOrder = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=orderId1)
-                                print('isUp EDIT Long -> set_trading_stop: ' + str(response))
+                                print('isUp EDIT LONG position -> set_trading_stop: ' + str(response))
 
 
                             #print('isUp EDIT Long -> response: ' + str(response))
 
                         # cnfg.iTimesTS += 1
-                if cnfg.isDown:
+                if cnfg.isDown: # IF SHORT
                     print('if Position!!!! isDown')
+                    diffPercDn = round((cnfg.costsSh[cnfg.loopItems - 1] - mlastPrice) / mlastPrice * 100,2)  # difference of first IN and Current cost for Short
                     tpShortFirst = cnfg.shTPfirstDn[cnfg.loopItems - 1]  # in %
-                    diffPercDn = round((cnfg.costsSh[cnfg.loopItems - 1] - mlastPrice) / mlastPrice * 100, 4)  # difference of first IN and Current cost for Short
+
                     getExecOrderList = getExecutionOrd(cnfg.orderID_sell)
                     execFeeSell = getExecOrderList[0]['execFee']
-                    print('isDown diff Short ->' + ' Original price: ' + str(cnfg.costsSh[cnfg.loopItems - 1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(cnfg.costsSh[cnfg.loopItems - 1] - mlastPrice, 2)) + '$' + ' Diff: ' + str(diffPercDn) + '%')
-                    print('isDown -> get_execution Sell Order: ' + str(cnfg.session.get_executions(category="linear", orderId=cnfg.orderID_sell, limit=1, )))
-                    print('isDown -> get_execution Sell Order Opened - execFeeSell: ' + str(execFeeSell))
-                    if (diffPercDn >= tpShortFirst / 2) and (diffPercDn > 0):
-                        # print('ml edit Order -> ')
-                        shNextPrice = round(mlastPrice * (1 + tpShortFirst / 2 / 100), 2)
-                        print('ml edit Short -> mlastPrice: ' + str(mlastPrice) + '; tpShortFirst/2: ' + str(tpShortFirst / 2) + '; shNextPrice: ' + str(shNextPrice))
-                        shNextTP = round(cnfg.costTP_Short[cnfg.loopItems - 1] * (1 + (tpShortFirst / 2 / 100)), 2)
-                        print('ml edit Short -> cnfg.costTP_Short: ' + str(cnfg.costTP_Short) + '; tpShortFirst/2: ' + str(tpShortFirst / 2) + '; shNextTP: ' + str( shNextTP))
-
-                # print('ml Percentage difference for Short: ' + str(diffPercDn) +' %')
+                    # print('isDown diff Short ->' + ' Original price: ' + str(cnfg.costsSh[cnfg.loopItems - 1]) + ' Current price: ' + str(mlastPrice) + ' Diff: ' + str(round(cnfg.costsSh[cnfg.loopItems - 1] - mlastPrice, 2)) + '$' + ' Diff: ' + str(diffPercDn) + '%')
+                    # print('isDown -> get_execution Sell Order: ' + str(cnfg.session.get_executions(category="linear", orderId=cnfg.orderID_sell, limit=1, )))
+                    # print('isDown -> get_execution Sell Order Opened - execFeeSell: ' + str(execFeeSell))
+                    loop = cnfg.loopItems - 1 #??????
+                    if cnfg.trailingCountSh >= 1:
+                        loopSh = cnfg.loopItems
+                    print('isDown Value for TP short = ' + str(cnfg.costTP_Short[loop]) + '; for SL Short =  ' + str(cnfg.costSL_Short[loop]) + '; loop =  ' + str(loop))
+                    print('isDown -> diffPercSh: ' + str(diffPercDn) + '; tpShFirst: ' + str(tpShortFirst))
+                    if (diffPercDn >= tpShortFirst / 2) and (diffPercDn > 0) and (cnfg.trailingCountSh <= 2):  # if a half of TP more then difference of first IN and Current cost
+                        delSLTP = cnfg.session.cancel_order(category="linear", symbol=cnfg.pair, orderId=listID[0])
+                        print('if Position SHORT!!!! Position Delete order listID[0]:' + str(delSLTP))
+                        if delSLTP['retMsg'] == 'OK':
+                            shNextPrice = round(mlastPrice * (1 - tpShortFirst / 2 / 100), 2) # For test ??????
+                            slShortFirst = cnfg.shSLfirstDn[cnfg.loopItems - 1]  # in %
+                            print('isDown edit short -> mlastPrice: ' + str(mlastPrice) + '; tpShortFirst/2: ' + str(tpShortFirst / 2) + '; shNextPrice: ' + str(shNextPrice))
+                            shNextTP = round(cnfg.costTP_Short[cnfg.loopItems - 1] * (1 - (tpShortFirst / 2 / 100)),cnfg.pricePrc)
+                            shNextSL = round(cnfg.costSL_Short[cnfg.loopItems - 1] * (1 - (slShortFirst / 2 / 100)),cnfg.pricePrc)
+                            print('isDown edit Long (First set) -> cnfg.shTPfirstDn(%): ' + str(cnfg.shTPfirstDn) + '; cnfg.costTP_Short($): ' + str( cnfg.costTP_Short) + '; shNextTP($): ' + str(shNextTP))
+                            print('isDown edit Short -> cnfg.shSLfirstDn: ' + str(cnfg.shSLfirstDn) + '; shSLfirstDn/2: ' + str(cnfg.shSLfirstDn[cnfg.loopItems - 1] / 2) + '; cnfg.costSL_Short: ' + str(cnfg.costSL_Short) + '; shNextSL: ' + str(shNextSL))
+                            print('isDown edit Short -> cnfg.positSh: ' + str(cnfg.positSh) + '; cnfg.loopItems: ' + str(cnfg.loopItems) + '; cnfg.trailingCountSh: ' + str(cnfg.trailingCountSh))
+                            response = set_trading_stop(shNextTP,shNextSL, cnfg.positSh[cnfg.loopItems - 1], exept_,0)
+                            if response:
+                                cnfg.trailingCountSh += 1
+                                if cnfg.trailingCountSh >= 2:
+                                    shNextTP2 = round(cnfg.costTP_Short[cnfg.loopItems - 1] * (1 + (tpShortFirst / 3 / 100)),cnfg.pricePrc)  # on second step take profit increase on 1/3
+                                    cnfg.costTP_Short[cnfg.loopItems - 1] = round(shNextTP2,cnfg.pricePrc) #rewrite TP
+                                    print('isDown edit SECOND item Short -> costTP_Short: ' + str(cnfg.costTP_Short[cnfg.loopItems - 1])+ '; shNextTP2 (TP increase on 1/3): ' + str(shNextTP2) )
+                                else:
+                                    cnfg.costTP_Short[cnfg.loopItems - 1] = shNextTP #rewrite TP
+                                    cnfg.costSL_Short[cnfg.loopItems - 1] = shNextSL #rewrite SL
+                                    print('isDown EDIT SL & TP!!!!!!!!!!!!!!')
+                                print('isDown EDIT SHORT position -> set_trading_stop: ' + str(response))
 
             # New order !!!!!!!!!!!!!!!!!!!!!
             #################################
