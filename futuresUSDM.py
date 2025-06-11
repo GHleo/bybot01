@@ -236,7 +236,7 @@ def mainLoop(pb00_, scrMain_, exept_):
                 print(str(dt.now().strftime('%H:%M:%S')) + '; if Position!!!! IPosition Info -> Pnl: ' + str(got_list[0]['unrealisedPnl']))
                 listID, listOT = getOrders(ordersList, ordInfoLen)
                 #print('if Position!!!! Position Orders: listID' + str(listID) + '; listOT: ' + str(listOT) + '; ordInfoLen: ' + str(ordInfoLen))
-                print('if Position!!!! Position Order[0] ?SL: ' + str(listID[0]) + '; Order[1] ?TP: ' + str(listID[1]))
+                #print('if Position!!!! Position Order[0] ?SL: ' + str(listID[0]) + '; Order[1] ?TP: ' + str(listID[1]))
 
                 if got_list[0]['unrealisedPnl'] != '':
                     Pnl_ = round(float(got_list[0]['unrealisedPnl']), 3)
